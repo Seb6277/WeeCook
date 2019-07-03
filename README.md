@@ -1,1 +1,2 @@
 [![Build Status](https://travis-ci.org/Seb6277/weecook.svg?branch=master)](https://travis-ci.org/Seb6277/weecook)
+[![codecov](https://codecov.io/gh/Seb6277/weecook/branch/master/graph/badge.svg)](https://codecov.io/gh/Seb6277/weecook)
