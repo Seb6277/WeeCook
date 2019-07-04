@@ -2,11 +2,43 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <title>{% block title %}WeeCook !{% endblock %}</title>
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
     </head>
     <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">WeeCook</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Trouver une recette<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Partager une recette</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Modération</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Connexion</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Inscription</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+    </div>
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+            {{ encore_entry_script_tags('importLib') }}
+        {% endblock %}
     </body>
 </html>
