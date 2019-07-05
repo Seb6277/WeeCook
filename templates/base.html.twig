@@ -8,7 +8,7 @@
     {% endblock %}
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+<nav class="navbar navbar-expand-lg navbar-light sticky-top">
     <a class="navbar-brand" href="/">WeeCook</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -33,7 +33,24 @@
         </ul>
     </div>
 </nav>
+
 {% block body %}{% endblock %}
+
+<footer class="container-fluid">
+    <div class="container">
+        <div class="footer-row row">
+            <div class="col-md-4">
+                <h3>WeeCook</h3>
+            </div>
+            <div class="col-md-4">
+                <p>© WeeCook 2019</p>
+            </div>
+            <div class="col-md-4">
+                <p>111 Main Street</br>+33 00 00 00 00</br>weecook@mail.com</p>
+            </div>
+        </div>
+    </div>
+</footer>
 {% block javascripts %}
     {{ encore_entry_script_tags('app') }}
 {% endblock %}
