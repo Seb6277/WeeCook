@@ -12,10 +12,21 @@ class RecipeController extends AbstractController
     /**
      * @Route("/show", name="recipe_show")
      */
-    public function index()
+    public function show()
     {
         return $this->render('recipe/show.html.twig', [
             'controller_name' => 'RecipeController',
+            'listIngredients' => $this->recipeIngredients
+        ]);
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/moderate", name="moderation_page")
+     */
+    public function moderate()
+    {
+        return $this->render('recipe/moderate.html.twig', [
             'listIngredients' => $this->recipeIngredients
         ]);
     }
