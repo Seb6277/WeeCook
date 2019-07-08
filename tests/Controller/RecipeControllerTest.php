@@ -27,4 +27,16 @@ class RecipeControllerTest extends WebTestCase
 
         static::assertContains('h1', $this->client->getResponse()->getContent());
     }
+
+    public function testModeratePageIsUp() {
+        $this->client->request('GET', '/moderate');
+
+        static::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testModeratePageIsRenderCorrectly() {
+        $this->client->request('GET', '/moderate');
+
+        static::assertContains('h1', $this->client->getResponse()->getContent());
+    }
 }
