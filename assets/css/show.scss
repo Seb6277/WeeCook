@@ -1,0 +1,25 @@
+.recipeShowContent{
+  .carousel-item{
+    height: 500px;
+  }
+  .carousel{
+    margin-bottom: 30px;
+  }
+  h1{
+    text-align: center;
+  }
+  h3{
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+  .person-select{
+    margin-bottom: 30px;
+    align-items: baseline;
+    p{
+      text-align: center;
+    }
+  }
+  .similar-recipe{
+    margin-bottom: 30px;
+  }
+}
