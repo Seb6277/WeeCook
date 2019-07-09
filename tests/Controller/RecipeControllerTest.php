@@ -39,4 +39,16 @@ class RecipeControllerTest extends WebTestCase
 
         static::assertContains('h1', $this->client->getResponse()->getContent());
     }
+
+    public function testCreatePageIsUp() {
+        $this->client->request('GET', '/create');
+
+        static::assertEquals(Response::HTTP_OK, $this->client->getResponse()-> getStatusCode());
+    }
+
+    public function testCreatePageIsRenderCorrectly() {
+        $this->client->request('GET', '/create');
+
+        static::assertContains('h1', $this->client->getResponse()->getContent());
+    }
 }

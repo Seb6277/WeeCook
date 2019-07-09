@@ -30,4 +30,15 @@ class RecipeController extends AbstractController
             'listIngredients' => $this->recipeIngredients
         ]);
     }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/create", name="creation_page")
+     */
+    public function editRecipe()
+    {
+        return $this->render('recipe/create.html.twig', [
+            'nbrIngredients' => 6
+        ]);
+    }
 }
