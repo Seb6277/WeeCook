@@ -3,7 +3,7 @@
 Only the following contribution will be accepted:
 
   - clone the repo.
-  - Create your own branch from develop. Master branch does not heve thye most recent update until released
+  - Create your own branch from develop. Master branch does not have the most recent update until released
   - Make your editing
   - Push on your github forked repo
   - Submit a pull request. with a correct message of containing the reason of the request

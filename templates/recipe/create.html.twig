@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container create_page">
+        <form>
+            <h1 class="col-md-12">Créer une recette</h1>
+            <div class="row">
+                <h4 class="col-md-3">Ingrédient</h4>
+                <h4 class="col-md-3">Quantité</h4>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {% for Ingredient in 0..nbrIngredients %}
+                        <div class="row">
+                            <input type="text" class="form-control col-md-6"/>
+                            <input type="text" class="form-control col-md-4 offset-md-1"/>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <img class="col-md-4" src="http://lorempixel.com/150/150/food"/>
+                        <img class="col-md-4" src="http://lorempixel.com/150/150/food"/>
+                        <img class="col-md-4" src="http://lorempixel.com/150/150/food"/>
+                    </div>
+                    <div class="row">
+                        <button class="btn btn-primary col-md-6 offset-md-3">Ajouter une photo</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <textarea class="form-control col-md-12 preparation"></textarea>
+            </div>
+            <div class="row">
+                <button type="submit" class=" submit-btn btn btn-success col-md-2 offset-md-10">Publier !</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
