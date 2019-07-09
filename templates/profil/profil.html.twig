@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container profil_layout">
+        <div class="row">
+            <h1>Profil de ...</h1>
+        </div>
+        <section class="row">
+            <div class="col-md-4">
+                <div class="row">
+                    <p>Nombre de contribution : xx</p>
+                </div>
+                <div class="row">
+                    <p>Nombre de modération : xx</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <form>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" class="form-control"/>
+                    </div>
+                    <button class="col-md-6 offset-md-6 btn btn-primary" type="submit">Changer e-mail</button>
+                </form>
+            </div>
+            <div class="col-md-4">
+                <form>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="check-password">Retaper password</label>
+                        <input type="password" class="form-control"/>
+                    </div>
+                    <button class="col-md-6 offset-md-6 btn btn-primary" type="submit">Changer password</button>
+                </form>
+            </div>
+        </section>
+        <section class="row favorite-section">
+            <div class="col-md-6">
+                <div class="row">
+                    <h4>Vos recettes</h4>
+                </div>
+                {% for recipe in 0..nbrRecipe %}
+                    <div class="row">
+                        <div class="card mb-3" style="max-width: 540px;">
+                            <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <img src="http://lorempixel.com/150/150/food" class="card-img" alt="...">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Nom de la recette</h5>
+                                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, aliquam animi assumenda atque dolorum ducimus...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <h4>Vos favoris</h4>
+                </div>
+                {% for favorites in 0..nbrFavorites %}
+                    <div class="row">
+                        <div class="card mb-3" style="max-width: 540px;">
+                            <div class="row no-gutters">
+                                <div class="col-md-4">
+                                    <img src="http://lorempixel.com/150/150/food" class="card-img" alt="...">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Nom de la recette</h5>
+                                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, aliquam animi assumenda atque dolorum ducimus...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+{% endblock %}
