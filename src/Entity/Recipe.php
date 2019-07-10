@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -51,6 +53,16 @@ class Recipe
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\IngredientQuantity", mappedBy="recipe")
+     */
+    private $ingredientQuantities;
+
+    public function __construct()
+    {
+        $this->ingredientQuantities = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -137,6 +149,37 @@ class Recipe
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|IngredientQuantity[]
+     */
+    public function getIngredientQuantities(): Collection
+    {
+        return $this->ingredientQuantities;
+    }
+
+    public function addIngredientQuantity(IngredientQuantity $ingredientQuantity): self
+    {
+        if (!$this->ingredientQuantities->contains($ingredientQuantity)) {
+            $this->ingredientQuantities[] = $ingredientQuantity;
+            $ingredientQuantity->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIngredientQuantity(IngredientQuantity $ingredientQuantity): self
+    {
+        if ($this->ingredientQuantities->contains($ingredientQuantity)) {
+            $this->ingredientQuantities->removeElement($ingredientQuantity);
+            // set the owning side to null (unless already changed)
+            if ($ingredientQuantity->getRecipe() === $this) {
+                $ingredientQuantity->setRecipe(null);
+            }
+        }
 
         return $this;
     }

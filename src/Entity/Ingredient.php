@@ -28,9 +28,14 @@ class Ingredient
      */
     private $mesureUnit;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\IngredientQuantity", mappedBy="ingredient")
+     */
+    private $ingredientQuantity;
+
     public function __construct()
     {
-        $this->recipes = new ArrayCollection();
+        $this->ingredientQuantity = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -58,6 +63,37 @@ class Ingredient
     public function setMesureUnit(string $mesureUnit): self
     {
         $this->mesureUnit = $mesureUnit;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|IngredientQuantity[]
+     */
+    public function getIngredientQuantity(): Collection
+    {
+        return $this->ingredientQuantity;
+    }
+
+    public function addIngredientQuantity(IngredientQuantity $ingredientQuantity): self
+    {
+        if (!$this->ingredientQuantity->contains($ingredientQuantity)) {
+            $this->ingredientQuantity[] = $ingredientQuantity;
+            $ingredientQuantity->setIngredient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIngredientQuantity(IngredientQuantity $ingredientQuantity): self
+    {
+        if ($this->ingredientQuantity->contains($ingredientQuantity)) {
+            $this->ingredientQuantity->removeElement($ingredientQuantity);
+            // set the owning side to null (unless already changed)
+            if ($ingredientQuantity->getIngredient() === $this) {
+                $ingredientQuantity->setIngredient(null);
+            }
+        }
 
         return $this;
     }
