@@ -49,24 +49,24 @@ class Recipe
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="recipes")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="author")
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\IngredientQuantity", mappedBy="recipe")
+     * @ORM\OneToMany(targetEntity="App\Entity\IngredientQuantity", mappedBy="recipe", orphanRemoval=true)
      */
-    private $ingredientQuantities;
+    private $ingredient;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Favorite", mappedBy="recipe")
+     * @ORM\OneToMany(targetEntity="App\Entity\Favorite", mappedBy="recipe", orphanRemoval=true)
      */
     private $favorite;
 
     public function __construct()
     {
-        $this->ingredientQuantities = new ArrayCollection();
+        $this->ingredient = new ArrayCollection();
         $this->favorite = new ArrayCollection();
     }
 
@@ -162,28 +162,28 @@ class Recipe
     /**
      * @return Collection|IngredientQuantity[]
      */
-    public function getIngredientQuantities(): Collection
+    public function getIngredient(): Collection
     {
-        return $this->ingredientQuantities;
+        return $this->ingredient;
     }
 
-    public function addIngredientQuantity(IngredientQuantity $ingredientQuantity): self
+    public function addIngredient(IngredientQuantity $ingredient): self
     {
-        if (!$this->ingredientQuantities->contains($ingredientQuantity)) {
-            $this->ingredientQuantities[] = $ingredientQuantity;
-            $ingredientQuantity->setRecipe($this);
+        if (!$this->ingredient->contains($ingredient)) {
+            $this->ingredient[] = $ingredient;
+            $ingredient->setRecipe($this);
         }
 
         return $this;
     }
 
-    public function removeIngredientQuantity(IngredientQuantity $ingredientQuantity): self
+    public function removeIngredient(IngredientQuantity $ingredient): self
     {
-        if ($this->ingredientQuantities->contains($ingredientQuantity)) {
-            $this->ingredientQuantities->removeElement($ingredientQuantity);
+        if ($this->ingredient->contains($ingredient)) {
+            $this->ingredient->removeElement($ingredient);
             // set the owning side to null (unless already changed)
-            if ($ingredientQuantity->getRecipe() === $this) {
-                $ingredientQuantity->setRecipe(null);
+            if ($ingredient->getRecipe() === $this) {
+                $ingredient->setRecipe(null);
             }
         }
 

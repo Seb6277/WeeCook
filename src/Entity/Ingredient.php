@@ -29,13 +29,13 @@ class Ingredient
     private $mesureUnit;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\IngredientQuantity", mappedBy="ingredient")
+     * @ORM\OneToMany(targetEntity="App\Entity\IngredientQuantity", mappedBy="ingredient", orphanRemoval=true)
      */
-    private $ingredientQuantity;
+    private $quantity;
 
     public function __construct()
     {
-        $this->ingredientQuantity = new ArrayCollection();
+        $this->quantity = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,28 +70,28 @@ class Ingredient
     /**
      * @return Collection|IngredientQuantity[]
      */
-    public function getIngredientQuantity(): Collection
+    public function getQuantity(): Collection
     {
-        return $this->ingredientQuantity;
+        return $this->quantity;
     }
 
-    public function addIngredientQuantity(IngredientQuantity $ingredientQuantity): self
+    public function addQuantity(IngredientQuantity $quantity): self
     {
-        if (!$this->ingredientQuantity->contains($ingredientQuantity)) {
-            $this->ingredientQuantity[] = $ingredientQuantity;
-            $ingredientQuantity->setIngredient($this);
+        if (!$this->quantity->contains($quantity)) {
+            $this->quantity[] = $quantity;
+            $quantity->setIngredient($this);
         }
 
         return $this;
     }
 
-    public function removeIngredientQuantity(IngredientQuantity $ingredientQuantity): self
+    public function removeQuantity(IngredientQuantity $quantity): self
     {
-        if ($this->ingredientQuantity->contains($ingredientQuantity)) {
-            $this->ingredientQuantity->removeElement($ingredientQuantity);
+        if ($this->quantity->contains($quantity)) {
+            $this->quantity->removeElement($quantity);
             // set the owning side to null (unless already changed)
-            if ($ingredientQuantity->getIngredient() === $this) {
-                $ingredientQuantity->setIngredient(null);
+            if ($quantity->getIngredient() === $this) {
+                $quantity->setIngredient(null);
             }
         }
 

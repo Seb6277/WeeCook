@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\SingupType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -33,6 +35,12 @@ class HomeController extends AbstractController
      */
     public function  signup()
     {
-        return $this->render('home/signup.html.twig', []);
+        $user = new User();
+
+        $form = new SingupType();
+
+        return $this->render('home/signup.html.twig', [
+            'signupForm' => $form->getForm()->createView()
+        ]);
     }
 }
