@@ -5,6 +5,11 @@
         <div class="row">
             <div id="signup-form"class="col-md-4 offset-md-4">
                 <h2>Inscription</h2>
+                <ul>
+                    {% if errors != null %}
+                        <p style="background-color: red; text-align: center">{{ errors }}</p>
+                    {% endif %}
+                </ul>
                 {{ form(signupForm) }}
             </div>
         </div>
