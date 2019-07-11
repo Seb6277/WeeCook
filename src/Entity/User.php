@@ -5,11 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -19,34 +21,33 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank()
      */
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="json")
      */
-    private $civility;
+    private $roles = [];
+
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank()
+     */
+    private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $password;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $nbrRecipes;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $nbrModeration;
+    private $civility;
 
     /**
      * @ORM\Column(type="datetime")
@@ -56,16 +57,16 @@ class User
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Recipe", mappedBy="author")
      */
-    private $recipes;
+    private $author;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Favorite", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Favorite", mappedBy="user", orphanRemoval=true)
      */
     private $favorite;
 
     public function __construct()
     {
-        $this->recipes = new ArrayCollection();
+        $this->author = new ArrayCollection();
         $this->favorite = new ArrayCollection();
     }
 
@@ -74,9 +75,14 @@ class User
         return $this->id;
     }
 
-    public function getUsername(): ?string
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
     {
-        return $this->username;
+        return (string) $this->username;
     }
 
     public function setUsername(string $username): self
@@ -86,16 +92,55 @@ class User
         return $this;
     }
 
-    public function getCivility(): ?string
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
     {
-        return $this->civility;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
-    public function setCivility(string $civility): self
+    public function setRoles(array $roles): self
     {
-        $this->civility = $civility;
+        $this->roles = $roles;
 
         return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
+    {
+        return (string) $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getEmail(): ?string
@@ -110,38 +155,14 @@ class User
         return $this;
     }
 
-    public function getPassword(): ?string
+    public function getCivility(): ?string
     {
-        return $this->password;
+        return $this->civility;
     }
 
-    public function setPassword(string $password): self
+    public function setCivility(string $civility): self
     {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function getNbrRecipes(): ?int
-    {
-        return $this->nbrRecipes;
-    }
-
-    public function setNbrRecipes(?int $nbrRecipes): self
-    {
-        $this->nbrRecipes = $nbrRecipes;
-
-        return $this;
-    }
-
-    public function getNbrModeration(): ?int
-    {
-        return $this->nbrModeration;
-    }
-
-    public function setNbrModeration(?int $nbrModeration): self
-    {
-        $this->nbrModeration = $nbrModeration;
+        $this->civility = $civility;
 
         return $this;
     }
@@ -161,28 +182,28 @@ class User
     /**
      * @return Collection|Recipe[]
      */
-    public function getRecipes(): Collection
+    public function getAuthor(): Collection
     {
-        return $this->recipes;
+        return $this->author;
     }
 
-    public function addRecipe(Recipe $recipe): self
+    public function addAuthor(Recipe $author): self
     {
-        if (!$this->recipes->contains($recipe)) {
-            $this->recipes[] = $recipe;
-            $recipe->setAuthor($this);
+        if (!$this->author->contains($author)) {
+            $this->author[] = $author;
+            $author->setAuthor($this);
         }
 
         return $this;
     }
 
-    public function removeRecipe(Recipe $recipe): self
+    public function removeAuthor(Recipe $author): self
     {
-        if ($this->recipes->contains($recipe)) {
-            $this->recipes->removeElement($recipe);
+        if ($this->author->contains($author)) {
+            $this->author->removeElement($author);
             // set the owning side to null (unless already changed)
-            if ($recipe->getAuthor() === $this) {
-                $recipe->setAuthor(null);
+            if ($author->getAuthor() === $this) {
+                $author->setAuthor(null);
             }
         }
 
