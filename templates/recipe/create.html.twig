@@ -2,8 +2,11 @@
 
 {% block body %}
     <div class="container create_page">
-        <form>
+        <form method="post">
             <h1 class="col-md-12">Créer une recette</h1>
+            <div class="row">
+                <input type="text" name="recipe_name" class="col-md-12" placeholder="Nom de a recette"/>
+            </div>
             <div class="row">
                 <h4 class="col-md-3">Ingrédient</h4>
                 <h4 class="col-md-3">Quantité</h4>
@@ -12,8 +15,8 @@
                 <div class="col-md-6">
                     {% for Ingredient in 0..nbrIngredients %}
                         <div class="row">
-                            <input type="text" class="form-control col-md-6"/>
-                            <input type="text" class="form-control col-md-4 offset-md-1"/>
+                            <input type="text" class="form-control col-md-6" name="ingredient{{ Ingredient }}"/>
+                            <input type="text" class="form-control col-md-4 offset-md-1" name="quantity{{ Ingredient }}"/>
                         </div>
                     {% endfor %}
                 </div>
@@ -29,7 +32,7 @@
                 </div>
             </div>
             <div class="row">
-                <textarea class="form-control col-md-12 preparation"></textarea>
+                <textarea class="form-control col-md-12 preparation" placeholder="Consigne de préparation" name="preparation"></textarea>
             </div>
             <div class="row">
                 <button type="submit" class=" submit-btn btn btn-success col-md-2 offset-md-10">Publier !</button>
