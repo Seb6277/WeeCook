@@ -46,6 +46,9 @@ class RecipeController extends AbstractController
         $recipe = new Recipe();
         $form = $this->createForm(EditRecipeType::class, $recipe);
 
+        //TODO: Handle the request to retrieve post request; place into each entity and flush it if all is OK
+        dump($request);
+
         /*
         $form->handleRequest($request);
 

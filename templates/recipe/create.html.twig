@@ -12,16 +12,10 @@
                 <h4 class="col-md-3">Quantité</h4>
             </div>
             <div class="row">
-                <div class="col-md-6">
-                    {% for Ingredient in 0..nbrIngredients %}
-                        <div class="row">
-                            {{ form_widget(recipe_form.ingredient) }}
-                            {#
-                            <input type="text" class="form-control col-md-6" name="ingredient{{ Ingredient }}"/>
-                            #}
-                            <input type="text" class="form-control col-md-4 offset-md-1" name="quantity{{ Ingredient }}"/>
-                        </div>
-                    {% endfor %}
+                <div class="col-md-6" id="create_form">
+                    {#
+                        Here comes webpack entrypoint 'create_form' for the React component who list ingredient dynamically
+                    #}
                 </div>
                 <div class="col-md-6">
                     <div class="row">
@@ -42,4 +36,5 @@
             </div>
         {{ form_end(recipe_form) }}
     </div>
+    {{ encore_entry_script_tags('create_form') }}
 {% endblock %}
