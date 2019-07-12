@@ -2,9 +2,8 @@
 
 {% block body %}
     <div class="container create_page">
-        {{ form_start(recipeForm) }}
+        <form>
             <h1 class="col-md-12">Créer une recette</h1>
-            {{ form_widget(recipeForm.name) }}
             <div class="row">
                 <h4 class="col-md-3">Ingrédient</h4>
                 <h4 class="col-md-3">Quantité</h4>
@@ -30,16 +29,11 @@
                 </div>
             </div>
             <div class="row">
-                {{ form_widget(recipeForm.preparation) }}
-            </div>
-            {#
-            <div class="row">
                 <textarea class="form-control col-md-12 preparation"></textarea>
             </div>
             <div class="row">
                 <button type="submit" class=" submit-btn btn btn-success col-md-2 offset-md-10">Publier !</button>
             </div>
-            #}
-        {{ form_end(recipeForm) }}
+        </form>
     </div>
 {% endblock %}
