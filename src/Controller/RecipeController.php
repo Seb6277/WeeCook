@@ -46,16 +46,13 @@ class RecipeController extends AbstractController
         $recipe = new Recipe();
         $form = $this->createForm(EditRecipeType::class, $recipe);
 
+        /*
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
         {
-
         }
-
-        dump($request->request);
-
-
+        */
 
         return $this->render('recipe/create.html.twig', [
             'nbrIngredients' => 6,

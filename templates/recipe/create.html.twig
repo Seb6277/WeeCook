@@ -15,7 +15,10 @@
                 <div class="col-md-6">
                     {% for Ingredient in 0..nbrIngredients %}
                         <div class="row">
+                            {{ form_widget(recipe_form.ingredient) }}
+                            {#
                             <input type="text" class="form-control col-md-6" name="ingredient{{ Ingredient }}"/>
+                            #}
                             <input type="text" class="form-control col-md-4 offset-md-1" name="quantity{{ Ingredient }}"/>
                         </div>
                     {% endfor %}
