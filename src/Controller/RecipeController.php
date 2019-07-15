@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Ingredient;
-use App\Entity\IngredientQuantity;
 use App\Entity\Recipe;
 use App\Form\EditRecipeType;
 use App\Repository\IngredientRepository;
@@ -14,6 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RecipeController extends AbstractController
 {
+    // TODO: Only for test, to delete once there are real recipe
     private $recipeIngredients = ['beurre', 'oeuf', 'sel', 'poivre', 'piment'];
 
     /**
@@ -48,7 +47,6 @@ class RecipeController extends AbstractController
         $form = $this->createForm(EditRecipeType::class, $recipe);
 
         //TODO: Handle the request to retrieve post request; place into each entity and flush it if all is OK
-        //dump($request);
 
         $form->handleRequest($request);
 
