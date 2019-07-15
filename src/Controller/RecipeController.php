@@ -49,13 +49,14 @@ class RecipeController extends AbstractController
         //TODO: Handle the request to retrieve post request; place into each entity and flush it if all is OK
         dump($request);
 
-        /*
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
         {
+            $form->getData();
+
+            dump($recipe);
         }
-        */
 
         return $this->render('recipe/create.html.twig', [
             'nbrIngredients' => 6,
