@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\IngredientQuantity;
 use App\Entity\Recipe;
 use App\Form\EditRecipeType;
 use App\Repository\IngredientRepository;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +16,15 @@ class RecipeController extends AbstractController
 {
     // TODO: Only for test, to delete once there are real recipe
     private $recipeIngredients = ['beurre', 'oeuf', 'sel', 'poivre', 'piment'];
+
+    private $ingredientRepository;
+    private $manager;
+
+    public function __construct(IngredientRepository $repository, ObjectManager $manager)
+    {
+        $this->ingredientRepository = $repository;
+        $this->manager = $manager;
+    }
 
     /**
      * @Route("/show", name="recipe_show")
@@ -44,6 +55,7 @@ class RecipeController extends AbstractController
     public function editRecipe(Request $request): Response
     {
         $recipe = new Recipe();
+
         $form = $this->createForm(EditRecipeType::class, $recipe);
 
         //TODO: Handle the request to retrieve post request; place into each entity and flush it if all is OK
@@ -59,6 +71,14 @@ class RecipeController extends AbstractController
             // Retrieve ingredient[] and quantity[]
             $ingredients = $this->getItemsFromRequest($request, 'ingredient');
             $quantities = $this->getItemsFromRequest($request, 'quantity');
+            for ($i=0; $i<count($ingredients); $i++)
+            {
+                $ingredientQuantity = new IngredientQuantity();
+                $ingredientQuantity->setIngredient($this->ingredientRepository->findOneByName($ingredients[$i]));
+                $ingredientQuantity->setQuantity($quantities[$i]);
+                $recipe->addIngredient($ingredientQuantity);
+            }
+            dump($recipe);
         }
 
         return $this->render('recipe/create.html.twig', [
