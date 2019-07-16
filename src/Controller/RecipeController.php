@@ -6,6 +6,7 @@ use App\Entity\IngredientQuantity;
 use App\Entity\Recipe;
 use App\Form\EditRecipeType;
 use App\Repository\IngredientRepository;
+use App\Service\FileUploader;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,16 +50,18 @@ class RecipeController extends AbstractController
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param Request $request
+     * @param FileUploader $fileUploader
+     * @param ObjectManager $manager
+     * @return Response
+     * @throws \Exception
      * @Route("/create", name="creation_page")
      */
-    public function editRecipe(Request $request): Response
+    public function editRecipe(Request $request, FileUploader $fileUploader, ObjectManager $manager): Response
     {
         $recipe = new Recipe();
 
         $form = $this->createForm(EditRecipeType::class, $recipe);
-
-        //TODO: Handle the request to retrieve post request; place into each entity and flush it if all is OK
 
         $form->handleRequest($request);
 
@@ -68,6 +71,9 @@ class RecipeController extends AbstractController
         {
             // Store name and preparation in $recipe
             $form->getData();
+            $image1 = $form['image1']->getData();
+            $image1Name = $fileUploader->upload($image1);
+            $recipe->setImage1($image1Name);
             // Retrieve ingredient[] and quantity[]
             $ingredients = $this->getItemsFromRequest($request, 'ingredient');
             $quantities = $this->getItemsFromRequest($request, 'quantity');
@@ -78,7 +84,13 @@ class RecipeController extends AbstractController
                 $ingredientQuantity->setQuantity($quantities[$i]);
                 $recipe->addIngredient($ingredientQuantity);
             }
-            dump($recipe);
+            $recipe->setCreatedAt(new \DateTime());
+            $recipe->setAuthor($this->getUser());
+            $manager->persist($recipe);
+            $manager->flush();
+
+            $this->redirectToRoute('home');
+
         }
 
         return $this->render('recipe/create.html.twig', [
