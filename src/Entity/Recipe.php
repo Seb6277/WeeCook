@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\RecipeRepository")
@@ -20,16 +21,19 @@ class Recipe
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $preparation;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $image1;
 
@@ -55,7 +59,7 @@ class Recipe
     private $author;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\IngredientQuantity", mappedBy="recipe", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\IngredientQuantity", mappedBy="recipe", orphanRemoval=true, cascade={"persist"})
      */
     private $ingredient;
 

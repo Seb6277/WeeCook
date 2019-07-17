@@ -24,6 +24,8 @@ Encore
      * and one CSS file (e.g. app.scss) if you JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
+    .addEntry('create_form', './assets/js/createForm.js')
+    .addEntry('input_file_placeholder', './assets/js/FileInputPlaceholder.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 
@@ -47,8 +49,12 @@ Encore
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 
+    .enableReactPreset()
+
     // enables @babel/preset-env polyfills
-    .configureBabel(() => {}, {
+    .configureBabel((babelConfig) => {
+        babelConfig.plugins.push("@babel/plugin-proposal-class-properties");
+    }, {
         useBuiltIns: 'usage',
         corejs: 3
     })
