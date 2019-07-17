@@ -17,7 +17,6 @@ class EditRecipeType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //TODO: Validation and presentation; Validation ever done for image file upload
         $builder
             ->add('name')
             ->add('preparation', TextareaType::class, ['attr' => [
@@ -35,6 +34,9 @@ class EditRecipeType extends AbstractType
                         ],
                         'mimeTypesMessage' => 'Veuillez fournir un fichier png ou jpg valide'
                     ])
+                ],
+                'attr' => [
+                    'placeholder' => 'Image .jpg ou .png'
                 ]
             ])
         ;
