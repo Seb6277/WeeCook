@@ -6,13 +6,15 @@ use App\Entity\IngredientQuantity;
 use App\Entity\Recipe;
 use App\Form\EditRecipeType;
 use App\Repository\IngredientRepository;
-use App\Repository\RecipeRepository;
 use App\Service\FileUploader;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class RecipeController extends AbstractController
 {
@@ -60,6 +62,7 @@ class RecipeController extends AbstractController
      */
     public function editRecipe(Request $request, FileUploader $fileUploader, ObjectManager $manager): Response
     {
+        $ingredientInDatabase = $this->ingredientRepository->findAll();
         $recipe = new Recipe();
 
         $form = $this->createForm(EditRecipeType::class, $recipe);
@@ -75,9 +78,12 @@ class RecipeController extends AbstractController
             $image1 = $form['image1']->getData();
             $image1Name = $fileUploader->upload($image1);
             $recipe->setImage1($image1Name);
+
             // Retrieve ingredient[] and quantity[]
             $ingredients = $this->getItemsFromRequest($request, 'ingredient');
             $quantities = $this->getItemsFromRequest($request, 'quantity');
+
+            // Setting ingredient for each ingredients in the list
             for ($i=0; $i<count($ingredients); $i++)
             {
                 $ingredientQuantity = new IngredientQuantity();
@@ -85,6 +91,8 @@ class RecipeController extends AbstractController
                 $ingredientQuantity->setQuantity($quantities[$i]);
                 $recipe->addIngredient($ingredientQuantity);
             }
+
+            // Finish the Recipe object and flush all by cascade
             $recipe->setCreatedAt(new \DateTime());
             $recipe->setAuthor($this->getUser());
             $manager->persist($recipe);
@@ -95,7 +103,8 @@ class RecipeController extends AbstractController
         }
 
         return $this->render('recipe/create.html.twig', [
-            'nbrIngredients' => 6,
+            //serialized ingredient send to React via HTML
+            'ingredients' => $this->serializeToJson($ingredientInDatabase),
             'recipe_form' => $form->createView()
         ]);
     }
@@ -131,5 +140,23 @@ class RecipeController extends AbstractController
             }
         }
         return $returnedItems;
+    }
+
+    private function serializeToJson($ingredients)
+    {
+        $items = [];
+        // Create an array of object to serialize
+        foreach ($ingredients as $ingredient)
+        {
+            array_push($items, [
+                'name' => $ingredient->getName(),
+                'mesure' => $ingredient->getMesureUnit()
+            ]);
+        }
+        $encoders = [new JsonEncoder()];
+        $normalizer = [new ObjectNormalizer()];
+
+        $serializer = new Serializer($normalizer, $encoders);
+        return $serializer->serialize($items, 'json');
     }
 }
