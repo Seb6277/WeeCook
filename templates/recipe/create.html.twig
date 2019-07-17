@@ -2,38 +2,37 @@
 
 {% block body %}
     <div class="container create_page">
-        <form>
+        {{ form_start(recipe_form) }}
             <h1 class="col-md-12">Créer une recette</h1>
+            <div class="row">
+                {{ form_widget(recipe_form.name) }}
+            </div>
             <div class="row">
                 <h4 class="col-md-3">Ingrédient</h4>
                 <h4 class="col-md-3">Quantité</h4>
+                <h4 class="col-md-4 offset-md-1">Ajouter une photo</h4>
             </div>
             <div class="row">
-                <div class="col-md-6">
-                    {% for Ingredient in 0..nbrIngredients %}
-                        <div class="row">
-                            <input type="text" class="form-control col-md-6"/>
-                            <input type="text" class="form-control col-md-4 offset-md-1"/>
-                        </div>
-                    {% endfor %}
+                <div class="col-md-6" id="create_form" data-items="{{ ingredients }}">
+                    {#
+                        Here comes webpack entrypoint 'create_form' for the React component who list ingredient dynamically
+                        data-items used to transport ingredient list serialized in JSON
+                    #}
                 </div>
                 <div class="col-md-6">
                     <div class="row">
-                        <img class="col-md-4" src="http://lorempixel.com/150/150/food"/>
-                        <img class="col-md-4" src="http://lorempixel.com/150/150/food"/>
-                        <img class="col-md-4" src="http://lorempixel.com/150/150/food"/>
-                    </div>
-                    <div class="row">
-                        <button class="btn btn-primary col-md-6 offset-md-3">Ajouter une photo</button>
+                        {{ form_widget(recipe_form.image1) }}
                     </div>
                 </div>
             </div>
             <div class="row">
-                <textarea class="form-control col-md-12 preparation"></textarea>
+                {{ form_widget(recipe_form.preparation) }}
             </div>
             <div class="row">
                 <button type="submit" class=" submit-btn btn btn-success col-md-2 offset-md-10">Publier !</button>
             </div>
-        </form>
+        {{ form_end(recipe_form) }}
     </div>
+    {{ encore_entry_script_tags('input_file_placeholder') }}
+    {{ encore_entry_script_tags('create_form') }}
 {% endblock %}
