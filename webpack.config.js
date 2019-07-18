@@ -25,7 +25,6 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('create_form', './assets/js/createForm.js')
-    .addEntry('input_file_placeholder', './assets/js/FileInputPlaceholder.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 
