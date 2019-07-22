@@ -27,7 +27,7 @@ class FileUploader
      * @param UploadedFile $file
      * @return string
      */
-    public function upload(UploadedFile $file)
+    public function upload(UploadedFile $file):string
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
@@ -45,7 +45,7 @@ class FileUploader
     /**
      * @return string
      */
-    public function getTargetDirectory()
+    public function getTargetDirectory():string
     {
         return $this->targetDirectory;
     }

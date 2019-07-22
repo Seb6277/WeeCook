@@ -2,20 +2,22 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Interfaces\ProfilControllerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
-class ProfilController extends AbstractController
+class ProfilController implements ProfilControllerInterface
 {
     /**
-     * @Route("/profil", name="profil")
+     * @Route("/profil", name="profil", methods={"GET", "POST"})
      */
-    public function index()
+    public function __invoke(Environment $twig):Response
     {
-        return $this->render('profil/profil.html.twig', [
+        return new Response($twig->render('profil/profil.html.twig', [
             'controller_name' => 'ProfilController',
             'nbrFavorites' => 3,
             'nbrRecipe' => 5
-        ]);
+        ]));
     }
 }
