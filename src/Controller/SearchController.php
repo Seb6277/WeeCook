@@ -2,19 +2,21 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Interfaces\SearchControllerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
-class SearchController extends AbstractController
+class SearchController implements SearchControllerInterface
 {
     /**
-     * @Route("/search", name="search")
+     * @Route("/search", name="search", methods={"GET", "POST"})
      */
-    public function search()
+    public function __invoke(Environment $twig):Response
     {
-        return $this->render('search/search.html.twig', [
+        return new Response($twig->render('search/search.html.twig', [
             'controller_name' => 'SearchController',
             'repeat' => 0
-        ]);
+        ]));
     }
 }

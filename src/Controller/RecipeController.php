@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Ingredient;
 use App\Entity\IngredientQuantity;
 use App\Entity\Recipe;
 use App\Form\EditRecipeType;
+use App\Interfaces\RecipeControllerInterface;
 use App\Repository\IngredientRepository;
 use App\Service\FileUploader;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -16,40 +18,16 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-class RecipeController extends AbstractController
+class RecipeController extends AbstractController implements RecipeControllerInterface
 {
-    // TODO: Only for test, to delete once there are real recipe
-    private $recipeIngredients = ['beurre', 'oeuf', 'sel', 'poivre', 'piment'];
 
     private $ingredientRepository;
     private $manager;
 
-    public function __construct(IngredientRepository $repository, ObjectManager $manager)
+    public function __construct(ObjectManager $manager)
     {
-        $this->ingredientRepository = $repository;
         $this->manager = $manager;
-    }
-
-    /**
-     * @Route("/show", name="recipe_show")
-     */
-    public function show()
-    {
-        return $this->render('recipe/show.html.twig', [
-            'controller_name' => 'RecipeController',
-            'listIngredients' => $this->recipeIngredients
-        ]);
-    }
-
-    /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/moderate", name="moderation_page")
-     */
-    public function moderate()
-    {
-        return $this->render('recipe/moderate.html.twig', [
-            'listIngredients' => $this->recipeIngredients
-        ]);
+        $this->ingredientRepository = $manager->getRepository(Ingredient::class);
     }
 
     /**
@@ -58,9 +36,10 @@ class RecipeController extends AbstractController
      * @param ObjectManager $manager
      * @return Response
      * @throws \Exception
-     * @Route("/create", name="creation_page")
+     *
+     * @Route("/create", name="creation_page", methods={"GET", "POST"})
      */
-    public function editRecipe(Request $request, FileUploader $fileUploader, ObjectManager $manager): Response
+    public function __invoke(Request $request, FileUploader $fileUploader, ObjectManager $manager): Response
     {
         $ingredientInDatabase = $this->ingredientRepository->findAll();
         $recipe = new Recipe();
@@ -142,6 +121,10 @@ class RecipeController extends AbstractController
         return $returnedItems;
     }
 
+    /**
+     * @param $ingredients
+     * @return bool|float|int|string
+     */
     private function serializeToJson($ingredients)
     {
         $items = [];

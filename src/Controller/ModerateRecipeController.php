@@ -1,17 +1,17 @@
 <?php
 
+
 namespace App\Controller;
 
-use App\Interfaces\HomeControllerInterface;
+use App\Interfaces\ModerateRecipeControllerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-
-class HomeController implements HomeControllerInterface
+class ModerateRecipeController implements ModerateRecipeControllerInterface
 {
     /**
-     * @Route("/", name="home", methods={"GET"})
+     * @Route("/moderate", name="moderation_page", methods={"GET", "POST"})
      *
      * @param Environment $twig
      * @return Response
@@ -21,8 +21,8 @@ class HomeController implements HomeControllerInterface
      */
     public function __invoke(Environment $twig):Response
     {
-        return new Response($twig->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
+        return new Response($twig->render('recipe/moderate.html.twig', [
+            'listIngredients' => RecipeShowController::$recipeIngredients
         ]));
     }
 }

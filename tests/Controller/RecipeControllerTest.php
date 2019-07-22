@@ -16,30 +16,6 @@ class RecipeControllerTest extends WebTestCase
         $this->client = static::createClient();
     }
 
-    public function testShowPageIsUp() {
-        $this->client->request('GET', '/show');
-
-        static::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testShowPageIsRenderingCorrectly() {
-        $this->client->request('GET', '/show');
-
-        static::assertContains('h1', $this->client->getResponse()->getContent());
-    }
-
-    public function testModeratePageIsUp() {
-        $this->client->request('GET', '/moderate');
-
-        static::assertEquals(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testModeratePageIsRenderCorrectly() {
-        $this->client->request('GET', '/moderate');
-
-        static::assertContains('Redirecting', $this->client->getResponse()->getContent());
-    }
-
     public function testCreatePageIsUp() {
         $this->client->request('GET', '/create');
 
