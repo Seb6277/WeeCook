@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Interfaces;
+namespace App\Controller\Interfaces;
 
 
 use Doctrine\Common\Persistence\ObjectManager;
@@ -11,10 +11,6 @@ use Twig\Environment;
 
 interface HomeControllerInterface
 {
-    public function __construct(
-        ObjectManager $manager,
-        ContainerInterface $container
-    );
-
+    public function __construct(ObjectManager $manager);
     public function __invoke(Environment $twig):Response;
 }

@@ -4,9 +4,9 @@
 namespace App\Controller;
 
 
+use App\Controller\Interfaces\SignupControllerInterface;
 use App\Entity\User;
 use App\Form\SingupType;
-use App\Interfaces\SignupControllerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Interfaces;
+namespace App\Controller\Interfaces;
 
 
 use Doctrine\Common\Persistence\ObjectManager;

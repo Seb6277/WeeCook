@@ -3,9 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Recipe;
-use App\Interfaces\HomeControllerInterface;
+use App\Controller\Interfaces\HomeControllerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
@@ -19,20 +18,12 @@ class HomeController implements HomeControllerInterface
     private $manager;
 
     /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
      * HomeController constructor.
      * @param ObjectManager $manager
      */
-    public function __construct(
-        ObjectManager $manager,
-        ContainerInterface $container
-    ){
+    public function __construct(ObjectManager $manager)
+    {
         $this->manager = $manager;
-        $this->container = $container;
     }
 
     /**

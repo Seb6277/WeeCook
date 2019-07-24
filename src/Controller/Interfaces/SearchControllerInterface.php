@@ -1,13 +1,13 @@
 <?php
 
 
-namespace App\Interfaces;
+namespace App\Controller\Interfaces;
 
 
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-interface RecipeShowControllerInterface
+interface SearchControllerInterface
 {
     public function __invoke(Environment $twig):Response;
 }
