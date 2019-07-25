@@ -4,7 +4,7 @@
     <div class="container recipeShowContent">
         <div class="row">
             <div class="col-md-12">
-                <h1>Nom de la recette</h1>
+                <h1>{{ recipe_name }}</h1>
             </div>
         </div>
         <div class="row">
@@ -18,18 +18,18 @@
                     <button class="btn btn-primary col-md-2">+</button>
                 </div>
                 <div class="row ingredient">
-                    {% for ingredient in listIngredients %}
+
+                    {% for ingredient in ingredients %}
                         <div class="col-md-6">
                             <p>{{ ingredient }} : Quantité</p>
                         </div>
                     {% endfor %}
+
                 </div>
                 <div class="row">
                     <h3 class="col-md-4">Préparation :</h3>
                     <p class="col-md-12">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab consequatur cum deleniti ducimus
-                        eos harum ipsa itaque libero magni nam, porro quam quasi quidem recusandae reiciendis sequi sint
-                        voluptates voluptatibus.
+                        {{ preparation }}
                     </p>
                 </div>
                 {% block page %}{% endblock %}

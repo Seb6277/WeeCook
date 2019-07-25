@@ -1,4 +1,12 @@
 /*
+ * Created with PHPStorm
+ * Date: 31/7/2019
+ * Time: 11:2
+ * Author: S. Carpentier
+ * Mail: sebastien.carpentier89@gmail.com
+ */
+
+/*
  * Welcome to your app's main JavaScript file!
  *
  * We recommend including the built version of this JavaScript file
