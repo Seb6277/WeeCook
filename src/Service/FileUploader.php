@@ -4,10 +4,11 @@
 namespace App\Service;
 
 
+use App\Service\Interfaces\FileUploaderInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class FileUploader
+class FileUploader implements FileUploaderInterface
 {
     /**
      * @var string
@@ -18,7 +19,7 @@ class FileUploader
      * FileUploader constructor.
      * @param $targetDirectory
      */
-    public function __construct($targetDirectory)
+    public function __construct(string $targetDirectory)
     {
         $this->targetDirectory = $targetDirectory;
     }

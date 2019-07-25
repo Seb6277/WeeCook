@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Interfaces\SecurityControllerInterface;
+use App\Controller\Interfaces\SecurityControllerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;

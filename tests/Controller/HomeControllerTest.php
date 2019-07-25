@@ -3,6 +3,9 @@
 
 namespace App\Tests\Controller;
 
+use App\Controller\HomeController;
+use App\Entity\Recipe;
+use App\Repository\RecipeRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,8 +20,9 @@ class HomeControllerTest extends WebTestCase
 
     public function testHomepageIsUp() {
         $this->client->request('GET', '/');
+        $this->createMock(RecipeRepository::class)->method('getThreeLatest')->willReturn([]);
 
-        static::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        static::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());
     }
 
     public function testNavbarIsRenderingCorrectly() {

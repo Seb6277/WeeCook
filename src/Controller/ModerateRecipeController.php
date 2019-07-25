@@ -3,7 +3,7 @@
 
 namespace App\Controller;
 
-use App\Interfaces\ModerateRecipeControllerInterface;
+use App\Controller\Interfaces\ModerateRecipeControllerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;

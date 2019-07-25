@@ -2,12 +2,11 @@
 
 namespace App\Controller;
 
+use App\Controller\Interfaces\RecipeControllerInterface;
 use App\Entity\Ingredient;
 use App\Entity\IngredientQuantity;
 use App\Entity\Recipe;
 use App\Form\EditRecipeType;
-use App\Interfaces\RecipeControllerInterface;
-use App\Repository\IngredientRepository;
 use App\Service\FileUploader;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

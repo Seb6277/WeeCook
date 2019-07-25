@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Recipe;
+use App\Repository\Interfaces\RecipeRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -12,8 +13,12 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Recipe[]    findAll()
  * @method Recipe[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class RecipeRepository extends ServiceEntityRepository
+class RecipeRepository extends ServiceEntityRepository implements RecipeRepositoryInterface
 {
+    /**
+     * RecipeRepository constructor.
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Recipe::class);
@@ -47,4 +52,14 @@ class RecipeRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function getThreeLatest()
+    {
+        // TODO: Implement getThreeLatest() method.
+        return $this->createQueryBuilder('recipe')
+            ->orderBy('recipe.createdAt', 'DESC')
+            ->setMaxResults(3)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Interfaces\ProfilControllerInterface;
+use App\Controller\Interfaces\ProfilControllerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
