@@ -55,6 +55,10 @@ class IngredientQuantityRepository extends ServiceEntityRepository
     }
     */
 
+    /**
+     * @param $recipeId
+     * @return mixed
+     */
     public function getAllItemsByRecipe($recipeId)
     {
         return $this->createQueryBuilder('items')

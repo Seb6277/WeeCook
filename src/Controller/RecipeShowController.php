@@ -13,6 +13,7 @@ use App\Controller\Interfaces\RecipeShowControllerInterface;
 use App\Entity\Ingredient;
 use App\Entity\IngredientQuantity;
 use App\Entity\Recipe;
+use App\Utils\RecipeUtils;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,6 +48,8 @@ class RecipeShowController implements RecipeShowControllerInterface
     public function __invoke(Request $request, Environment $twig):Response
     {
         $ingredients = [];
+        $quantities = [];
+        $measures = [];
 
         // Declare repository for each entity used
         $recipeRepository = $this->manager
@@ -69,15 +72,19 @@ class RecipeShowController implements RecipeShowControllerInterface
             $ingredient = $item
                 ->getIngredient()
                 ->getId();
+
             array_push($ingredients, $ingredientRepository->find($ingredient)->getName());
         }
-
 
         return new Response($twig->render('recipe/show.html.twig', [
             'controller_name' => 'RecipeShowController',
             'preparation' => $recipe->getPreparation(),
             'recipe_name' => $recipe->getName(),
-            'ingredients' => $ingredients
+            'ingredients' => $ingredients,
+            'quantities' => $quantities,
+            'measures' => $measures,
+            'ingredient_length' => count($ingredients),
+            'image1' => RecipeUtils::getImageUri($recipe)
         ]));
     }
 }
