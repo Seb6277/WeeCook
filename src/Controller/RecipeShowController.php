@@ -1,20 +1,43 @@
 <?php
-
+/**
+ * Created with PHPStorm
+ * Date: 3/8/2019
+ * Time: 5:46
+ * Author: S. Carpentier
+ * Mail: sebastien.carpentier89@gmail.com
+ */
 
 namespace App\Controller;
 
 use App\Controller\Interfaces\RecipeShowControllerInterface;
+use App\Entity\Ingredient;
+use App\Entity\IngredientQuantity;
+use App\Entity\Recipe;
+use App\Utils\RecipeUtils;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
 class RecipeShowController implements RecipeShowControllerInterface
 {
-    // TODO: Only for test
-    static $recipeIngredients = ['beurre', 'oeuf', 'sel', 'poivre', 'piment'];
+    /**
+     * @var ObjectManager
+     */
+    private $manager;
 
     /**
-     * @Route("/show", name="recipe_show", methods={"GET"})
+     * RecipeShowController constructor.
+     * @param ObjectManager $manager
+     */
+    public function __construct(ObjectManager $manager)
+    {
+        $this->manager = $manager;
+    }
+
+    /**
+     * @Route("/show/{id}", name="recipe_show", methods={"GET"}, requirements={"id" = "\d+"})
      *
      * @param Environment $twig
      * @return string
@@ -22,11 +45,47 @@ class RecipeShowController implements RecipeShowControllerInterface
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function __invoke(Environment $twig):Response
+    public function __invoke(Request $request, Environment $twig, int $id):Response
     {
+        $ingredients = [];
+        $quantities = [];
+        $measures = [];
+
+        // Declare repository for each entity used
+        $recipeRepository = $this->manager
+            ->getRepository(Recipe::class);
+        $ingredientQuantityRepository = $this->manager
+            ->getRepository(IngredientQuantity::class);
+        $ingredientRepository = $this->manager
+            ->getRepository(Ingredient::class);
+
+        // Retrieve recipe information for id
+        $recipe = $recipeRepository->find($id);
+
+        // Retrieve list of ingredient in a array
+        $ingredientQuantity = $ingredientQuantityRepository->getAllItemsByRecipe($id);
+        foreach ($ingredientQuantity as $item)
+        {
+            $ingredient = $item
+                ->getIngredient()
+                ->getId();
+
+            $quantity = $item->getQuantity();
+
+            array_push($ingredients, $ingredientRepository->find($ingredient)->getName());
+            array_push($measures, $ingredientRepository->find($ingredient)->getMesureUnit());
+            array_push($quantities, $quantity);
+        }
+        
         return new Response($twig->render('recipe/show.html.twig', [
             'controller_name' => 'RecipeShowController',
-            'listIngredients' => self::$recipeIngredients
+            'preparation' => $recipe->getPreparation(),
+            'recipe_name' => $recipe->getName(),
+            'ingredients' => $ingredients,
+            'quantities' => $quantities,
+            'measures' => $measures,
+            'ingredient_length' => count($ingredients),
+            'image1' => RecipeUtils::getImageUri($recipe)
         ]));
     }
 }
