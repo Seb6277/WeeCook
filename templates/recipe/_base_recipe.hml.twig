@@ -21,7 +21,7 @@
 
                     {% for ingredient in ingredients %}
                         <div class="col-md-6">
-                            <p>{{ ingredient }} : Quantité</p>
+                            <p>{{ ingredient }} : {{ quantities[loop.index0] }} {{ measures[loop.index0] }}</p>
                         </div>
                     {% endfor %}
 

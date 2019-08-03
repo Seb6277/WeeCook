@@ -1,8 +1,8 @@
 <?php
 /**
  * Created with PHPStorm
- * Date: 31/7/2019
- * Time: 11:2
+ * Date: 3/8/2019
+ * Time: 5:46
  * Author: S. Carpentier
  * Mail: sebastien.carpentier89@gmail.com
  */
@@ -37,7 +37,7 @@ class RecipeShowController implements RecipeShowControllerInterface
     }
 
     /**
-     * @Route("/show/{id}", name="recipe_show", methods={"GET"})
+     * @Route("/show/{id}", name="recipe_show", methods={"GET"}, requirements={"id" = "\d+"})
      *
      * @param Environment $twig
      * @return string
@@ -45,7 +45,7 @@ class RecipeShowController implements RecipeShowControllerInterface
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function __invoke(Request $request, Environment $twig):Response
+    public function __invoke(Request $request, Environment $twig, int $id):Response
     {
         $ingredients = [];
         $quantities = [];
@@ -60,22 +60,23 @@ class RecipeShowController implements RecipeShowControllerInterface
             ->getRepository(Ingredient::class);
 
         // Retrieve recipe information for id
-        $recipe = $recipeRepository->find($request->attributes->get('id'));
+        $recipe = $recipeRepository->find($id);
 
         // Retrieve list of ingredient in a array
-        $ingredientQuantity = $ingredientQuantityRepository
-            ->getAllItemsByRecipe($request
-                ->attributes
-                ->get('id'));
+        $ingredientQuantity = $ingredientQuantityRepository->getAllItemsByRecipe($id);
         foreach ($ingredientQuantity as $item)
         {
             $ingredient = $item
                 ->getIngredient()
                 ->getId();
 
-            array_push($ingredients, $ingredientRepository->find($ingredient)->getName());
-        }
+            $quantity = $item->getQuantity();
 
+            array_push($ingredients, $ingredientRepository->find($ingredient)->getName());
+            array_push($measures, $ingredientRepository->find($ingredient)->getMesureUnit());
+            array_push($quantities, $quantity);
+        }
+        
         return new Response($twig->render('recipe/show.html.twig', [
             'controller_name' => 'RecipeShowController',
             'preparation' => $recipe->getPreparation(),

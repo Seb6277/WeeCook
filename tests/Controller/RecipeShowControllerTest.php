@@ -22,13 +22,6 @@ class RecipeShowControllerTest extends WebTestCase
         $this->client = static::createClient();
     }
 
-    public function testShowPageIsUp()
-    {
-        $this->client->request('GET', '/show');
-
-        static::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-    }
-
     public function testShowPageIsRenderingCorrectly()
     {
         $this->client->request('GET', '/show');

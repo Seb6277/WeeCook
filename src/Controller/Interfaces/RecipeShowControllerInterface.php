@@ -1,8 +1,8 @@
 <?php
 /**
  * Created with PHPStorm
- * Date: 31/7/2019
- * Time: 11:2
+ * Date: 3/8/2019
+ * Time: 5:46
  * Author: S. Carpentier
  * Mail: sebastien.carpentier89@gmail.com
  */
@@ -19,5 +19,5 @@ interface RecipeShowControllerInterface
 {
     public function __construct(ObjectManager $manager);
 
-    public function __invoke(Request $request, Environment $twig):Response;
+    public function __invoke(Request $request, Environment $twig, int $id):Response;
 }

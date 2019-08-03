@@ -21,12 +21,6 @@ class SearchControllerTest extends WebTestCase
         $this->client = static::createClient();
     }
 
-    public function testSearchPageIsUp() {
-        $this->client->request('GET', '/search');
-
-        static::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-    }
-
     public function testSearchInputIsRendering() {
         $this->client->request('GET', '/search');
 
