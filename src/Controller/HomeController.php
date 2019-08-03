@@ -1,8 +1,8 @@
 <?php
 /**
  * Created with PHPStorm
- * Date: 31/7/2019
- * Time: 11:2
+ * Date: 3/8/2019
+ * Time: 7:0
  * Author: S. Carpentier
  * Mail: sebastien.carpentier89@gmail.com
  */
@@ -24,8 +24,6 @@ class HomeController implements HomeControllerInterface
      * @var ObjectManager
      */
     private $manager;
-
-    private $recipeUtils;
 
     /**
      * HomeController constructor.

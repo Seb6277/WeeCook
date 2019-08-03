@@ -19,39 +19,19 @@
             </form>
         </div>
     </div>
-    {% for repeat in 1..10 %}
     <div class="row">
+        {% for recipe in recipes %}
         <div class="col-md-4">
             <div class="card">
-                <img src="http://lorempixel.com/150/80/food" class="card-img-top" alt="...">
+                <img src="{{ images[loop.index0] }}">
                 <div class="card-body">
-                    <h5 class="card-title">Recette</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="{{ path('recipe_show', {'id': repeat}) }}" class="btn btn-primary">Consulter</a>
+                    <h5 class="card-title">{{ recipe.name }}</h5>
+                    <p class="card-text">{{ recipe.preparation }}</p>
+                    <a href="{{ path('recipe_show', {'id': recipe.id}) }}" class="btn btn-primary">Consulter</a>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card">
-                <img src="http://lorempixel.com/150/80/food" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Recette</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="{{ path('recipe_show', {'id': repeat}) }}" class="btn btn-primary">Consulter</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <img src="http://lorempixel.com/150/80/food" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h5 class="card-title">Recette</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="{{ path('recipe_show', {'id': repeat}) }}" class="btn btn-primary">Consulter</a>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 {% endblock %}
