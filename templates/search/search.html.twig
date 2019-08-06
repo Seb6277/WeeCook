@@ -11,12 +11,18 @@
     </div>
     <div class="row">
         <div class="col-md-12">
+            {{ form_start(form) }}
+            {{ form_widget(form.searchString) }}
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+            {{ form_end(form) }}
+            {#
             <form>
                 <div class="form-group">
                     <label for="searchField">Rechercher: </label>
                     <input class="form-control" type="text" id="searchField"/>
                 </div>
             </form>
+            #}
         </div>
     </div>
     <div class="row">

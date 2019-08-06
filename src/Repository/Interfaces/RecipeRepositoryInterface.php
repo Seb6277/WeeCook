@@ -10,10 +10,12 @@
 namespace App\Repository\Interfaces;
 
 
+use App\DTO\SearchDTO;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 interface RecipeRepositoryInterface
 {
     public function __construct(RegistryInterface $registry);
     public function  getThreeLatest();
+    public function getRecipeByName(string $search);
 }

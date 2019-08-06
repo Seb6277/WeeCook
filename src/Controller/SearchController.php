@@ -10,9 +10,14 @@
 namespace App\Controller;
 
 use App\Controller\Interfaces\SearchControllerInterface;
+use App\DTO\SearchDTO;
 use App\Entity\Recipe;
+use App\Form\Interfaces\SearchRecipeFormTypeInterface;
+use App\Form\SearchRecipeFormType;
 use App\Utils\RecipeUtils;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
@@ -41,11 +46,26 @@ class SearchController implements SearchControllerInterface
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function __invoke(Environment $twig):Response
+    public function __invoke(
+        Request $request,
+        Environment $twig,
+        FormFactoryInterface $formFactory,
+        SearchDTO $searchDTO):Response
     {
         $imageList = [];
 
+        $form = $formFactory->create(SearchRecipeFormType::class);
+
         $recipes = $this->manager->getRepository(Recipe::class)->findAll();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $searchDTO->searchString = $form->getData();
+            $recipes = $this->manager->getRepository(Recipe::class)
+                ->getRecipeByName((string)$searchDTO);
+        }
 
         foreach ($recipes as $recipe)
         {
@@ -53,7 +73,8 @@ class SearchController implements SearchControllerInterface
         }
         return new Response($twig->render('search/search.html.twig', [
             'recipes' => $recipes,
-            'images' => $imageList
+            'images' => $imageList,
+            'form' => $form->createView()
         ]));
     }
 }
