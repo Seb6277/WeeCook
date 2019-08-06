@@ -52,8 +52,6 @@ class SearchController implements SearchControllerInterface
             array_push($imageList, RecipeUtils::getImageUri($recipe));
         }
         return new Response($twig->render('search/search.html.twig', [
-            'controller_name' => 'SearchController',
-            'repeat' => 0,
             'recipes' => $recipes,
             'images' => $imageList
         ]));
