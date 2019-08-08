@@ -81,11 +81,10 @@ class RecipeRepository extends ServiceEntityRepository implements RecipeReposito
     public function getRecipeByName(string $search)
     {
         return $this->createQueryBuilder('recipe')
-            ->andWhere('recipe.name = :val')
-            ->setParameter('val', $search)
+            ->andWhere('REGEXP(recipe.name, :regexp) = true')
+            ->setParameter('regexp', $search)
             ->getQuery()
             ->getResult()
             ;
-        //TODO: Retrieve partial name
     }
 }
