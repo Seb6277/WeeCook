@@ -9,6 +9,7 @@
 
 namespace App\Repository;
 
+use App\DTO\SearchDTO;
 use App\Entity\Recipe;
 use App\Repository\Interfaces\RecipeRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -59,12 +60,29 @@ class RecipeRepository extends ServiceEntityRepository implements RecipeReposito
         ;
     }
     */
+
+    /**
+     * @return mixed
+     */
     public function getThreeLatest()
     {
-        // TODO: Implement getThreeLatest() method.
         return $this->createQueryBuilder('recipe')
             ->orderBy('recipe.createdAt', 'DESC')
             ->setMaxResults(3)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @param string $search
+     * @return mixed
+     */
+    public function getRecipeByName(string $search)
+    {
+        return $this->createQueryBuilder('recipe')
+            ->andWhere('REGEXP(recipe.name, :regexp) = true')
+            ->setParameter('regexp', $search)
             ->getQuery()
             ->getResult()
             ;

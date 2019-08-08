@@ -9,11 +9,13 @@
 
 namespace App\Controller\Interfaces;
 
-
+use App\DTO\SearchDTO;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
 interface SearchControllerInterface
 {
-    public function __invoke(Environment $twig):Response;
+    public function __invoke(Request $request, Environment $twig, FormFactoryInterface $formFactory, SearchDTO $searchDTO):Response;
 }
