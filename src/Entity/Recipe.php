@@ -74,6 +74,11 @@ class Recipe
      */
     private $favorite;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $validation;
+
     public function __construct()
     {
         $this->ingredient = new ArrayCollection();
@@ -165,6 +170,18 @@ class Recipe
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getValidation()
+    {
+        return $this->validation;
+    }
+
+    public function setValidation(bool $validation)
+    {
+        $this->validation = $validation;
 
         return $this;
     }

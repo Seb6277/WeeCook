@@ -83,6 +83,35 @@ class RecipeRepository extends ServiceEntityRepository implements RecipeReposito
         return $this->createQueryBuilder('recipe')
             ->andWhere('REGEXP(recipe.name, :regexp) = true')
             ->setParameter('regexp', $search)
+            ->andWhere('recipe.validation = :val')
+            ->setParameter('val', 1)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNonValidate()
+    {
+        return $this->createQueryBuilder('recipe')
+            ->andWhere('recipe.validation = :val')
+            ->setParameter('val', 0)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function findAllValid()
+    {
+        return $this->createQueryBuilder('recipe')
+            ->andWhere('recipe.validation = :val')
+            ->setParameter('val', 1)
             ->getQuery()
             ->getResult()
             ;
