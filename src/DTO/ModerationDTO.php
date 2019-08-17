@@ -12,5 +12,19 @@ namespace App\DTO;
 
 class ModerationDTO
 {
+    public $validate;
 
+    public function __construct()
+    {
+        $this->validate = false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getValidate(): bool
+    {
+        dump($this->validate);
+        return $this->validate;
+    }
 }

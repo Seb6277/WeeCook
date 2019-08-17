@@ -10,11 +10,14 @@
 namespace App\Controller;
 
 use App\Controller\Interfaces\ModerateRecipeControllerInterface;
+use App\DTO\ModerationDTO;
 use App\Entity\Ingredient;
 use App\Entity\IngredientQuantity;
 use App\Entity\Recipe;
+use App\Form\ModerationType;
 use App\Utils\RecipeUtils;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -45,7 +48,11 @@ class ModerateRecipeController implements ModerateRecipeControllerInterface
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function __invoke(Request $request, Environment $twig):Response
+    public function __invoke(
+        Request $request,
+        Environment $twig,
+        FormFactoryInterface $formFactory,
+        ModerationDTO $moderationDTO):Response
     {
         $ingredients = [];
         $quantities = [];
@@ -75,6 +82,21 @@ class ModerateRecipeController implements ModerateRecipeControllerInterface
             array_push($measures, $ingredientRepository->find($ingredient)->getMesureUnit());
             array_push($quantities, $quantity);
         }
+
+        $form = $formFactory->create(ModerationType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid())
+        {
+            $moderationDTO->validate = $form->getData();
+            if ($moderationDTO->validate != null)
+            {
+                $recipe->setValidation($moderationDTO->getValidate());
+            }
+            dump($recipe);
+            //$this->manager->flush();
+        }
+
         return new Response($twig->render('recipe/moderate.html.twig', [
             'preparation' => $recipe->getPreparation(),
             'recipe_name' => $recipe->getName(),
@@ -82,7 +104,8 @@ class ModerateRecipeController implements ModerateRecipeControllerInterface
             'quantities' => $quantities,
             'measures' => $measures,
             'ingredient_length' => count($ingredients),
-            'image1' => RecipeUtils::getImageUri($recipe)
+            'image1' => RecipeUtils::getImageUri($recipe),
+            'form' => $form->createView()
         ]));
     }
 }

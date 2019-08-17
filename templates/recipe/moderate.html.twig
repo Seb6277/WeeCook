@@ -3,8 +3,9 @@
 {% block page %}
     <div class="row validation">
         <h4 class="col-md-12">Cette recette est-elle valide ?</h4>
-        <button class="btn btn-success col-md-2 offset-md-1">oui</button>
-        <button class="btn btn-primary col-md-2 offset-md-1">passer</button>
-        <button class="btn btn-danger col-md-2 offset-md-1">non</button>
+        {{ form_start(form) }}
+        {{ form_widget(form.validate) }}
+        <button class="btn btn-success col-md-12">Envoyer</button>
+        {{ form_end(form) }}
     </div>
 {% endblock %}
