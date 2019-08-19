@@ -23,9 +23,7 @@ class ModerationType extends AbstractType
         $builder
             ->add('validate', ChoiceType::class, [
                 'choices' => ['Oui' => true, 'Non' => false],
-                'attr' => [
-                    'class' => 'col-md-12'
-                ]
+                'attr' => ['class' => 'col-md-12']
             ]);
     }
 

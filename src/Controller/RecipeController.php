@@ -80,6 +80,7 @@ class RecipeController extends AbstractController implements RecipeControllerInt
             // Finish the Recipe object and flush all by cascade
             $recipe->setCreatedAt(new \DateTime());
             $recipe->setAuthor($this->getUser());
+            $recipe->setValidation(false);
             $manager->persist($recipe);
             $manager->flush();
 

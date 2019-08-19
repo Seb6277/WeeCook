@@ -9,7 +9,6 @@
 
 namespace App\Repository;
 
-use App\DTO\SearchDTO;
 use App\Entity\Recipe;
 use App\Repository\Interfaces\RecipeRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

@@ -83,18 +83,28 @@ class ModerateRecipeController implements ModerateRecipeControllerInterface
             array_push($quantities, $quantity);
         }
 
+        /**
+         * Handle the validation section
+         */
+
         $form = $formFactory->create(ModerationType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
         {
-            $moderationDTO->validate = $form->getData();
-            if ($moderationDTO->validate != null)
+            $validation = $request->request->get('moderation');
+
+            if ($validation['validate'] === 'O')
             {
-                $recipe->setValidation($moderationDTO->getValidate());
+                $this->manager->remove($recipe);
+                $this->manager->flush();
             }
-            dump($recipe);
-            //$this->manager->flush();
+            elseif ($validation['validate'] === '1')
+            {
+                $recipe->setValidation(true);
+            }
+
+            $this->manager->flush();
         }
 
         return new Response($twig->render('recipe/moderate.html.twig', [
