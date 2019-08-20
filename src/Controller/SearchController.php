@@ -56,7 +56,7 @@ class SearchController implements SearchControllerInterface
 
         $form = $formFactory->create(SearchRecipeFormType::class);
 
-        $recipes = $this->manager->getRepository(Recipe::class)->findAll();
+        $recipes = $this->manager->getRepository(Recipe::class)->findAllValid();
 
         $form->handleRequest($request);
 
