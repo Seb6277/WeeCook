@@ -34,7 +34,7 @@
             </li>
             {% else %}
             <li class="nav-item">
-                <a class="nav-link">Bonjour {{ app.user.username }} !</a>
+                <a class="nav-link" href="{{ path('profil') }}">Bonjour {{ app.user.username }} !</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('logout') }}">Déconnexion</a>

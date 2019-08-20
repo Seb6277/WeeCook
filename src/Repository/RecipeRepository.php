@@ -115,4 +115,18 @@ class RecipeRepository extends ServiceEntityRepository implements RecipeReposito
             ->getResult()
             ;
     }
+
+    /**
+     * @param $authorId
+     * @return mixed
+     */
+    public function getRecipeByAuthor($authorId)
+    {
+        return $this->createQueryBuilder('recipe')
+            ->andWhere('recipe.author = :val')
+            ->setParameter('val', $authorId)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

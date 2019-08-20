@@ -3,15 +3,12 @@
 {% block body %}
     <div class="container profil_layout">
         <div class="row">
-            <h1>Profil de ...</h1>
+            <h1>Profil de {{ app.user.username }}</h1>
         </div>
         <section class="row">
             <div class="col-md-4">
                 <div class="row">
-                    <p>Nombre de contribution : xx</p>
-                </div>
-                <div class="row">
-                    <p>Nombre de modération : xx</p>
+                    <p>Nombre de contribution : {{ contribution_count }}</p>
                 </div>
             </div>
             <div class="col-md-4">
@@ -42,7 +39,7 @@
                 <div class="row">
                     <h4>Vos recettes</h4>
                 </div>
-                {% for recipe in 0..nbrRecipe %}
+                {% for recipe in authored_recipe_list %}
                     <div class="row">
                         <div class="card mb-3" style="max-width: 540px;">
                             <div class="row no-gutters">
