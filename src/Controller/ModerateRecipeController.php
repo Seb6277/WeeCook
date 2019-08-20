@@ -65,8 +65,14 @@ class ModerateRecipeController implements ModerateRecipeControllerInterface
         $ingredientRepository = $this->manager
             ->getRepository(Ingredient::class);
 
-        $recipe_array = $recipeRepository->getNonValidate();
-        $recipe = $recipe_array[0];
+        $recipe_array = $recipeRepository->getOneNonValidate();
+
+        if (count($recipe_array) == 1)
+        {
+            $recipe = $recipe_array[0];
+        } else {
+            return new Response($twig->render('recipe/no_recipe_moderate.html.twig'));
+        }
 
 
         $ingredientQuantity = $ingredientQuantityRepository->getAllItemsByRecipe($recipe->getId());
@@ -94,7 +100,7 @@ class ModerateRecipeController implements ModerateRecipeControllerInterface
         {
             $validation = $request->request->get('moderation');
 
-            if ($validation['validate'] === 'O')
+            if ($validation['validate'] === '0')
             {
                 $this->manager->remove($recipe);
                 $this->manager->flush();

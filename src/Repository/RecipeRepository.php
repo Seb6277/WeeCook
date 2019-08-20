@@ -90,9 +90,9 @@ class RecipeRepository extends ServiceEntityRepository implements RecipeReposito
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getNonValidate()
+    public function getOneNonValidate()
     {
         return $this->createQueryBuilder('recipe')
             ->andWhere('recipe.validation = :val')
