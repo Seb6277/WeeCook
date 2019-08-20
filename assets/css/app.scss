@@ -13,6 +13,7 @@
 @import 'moderate.scss';
 @import 'create.scss';
 @import 'profil.scss';
+@import "no_recipe.scss";
 
 nav{
   background-color: #FFD858;
@@ -46,7 +47,7 @@ nav{
       margin-top: 20px;
       margin-bottom: 20px;
       height: 300px;
-      width: 500px;
+      width: inherit;
       box-shadow: 5px 5px 10px grey;
     }
   }
@@ -58,5 +59,14 @@ footer{
     padding-top: 20px;
     align-items: center;
     text-align: center;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .signup-image-row{
+    display: none;
+  }
+  .btn-action{
+    margin-bottom: 30px;
   }
 }

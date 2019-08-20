@@ -31,3 +31,9 @@
     margin-bottom: 30px;
   }
 }
+
+@media screen and (max-width: 640px){
+  .similar-recipe{
+    display: none;
+  }
+}
