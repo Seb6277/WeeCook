@@ -21,8 +21,8 @@ class EditPasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('password', PasswordType::class)
-            ->add('retypePassword', PasswordType::class);
+            ->add('password', PasswordType::class, ['label' => 'Mot de passe :'])
+            ->add('retypePassword', PasswordType::class, ['label' => 'vérifiez le mot de passe :']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

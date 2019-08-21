@@ -8,7 +8,7 @@
         {% for label, messages in app.flashes(['info', 'error']) %}
             {% for message in messages %}
                 <div class="row flash-message-{{ label }}">
-                    {{ message }}
+                    <p>{{ message }}</p>
                 </div>
             {% endfor %}
         {% endfor %}
@@ -20,15 +20,18 @@
             </div>
             <div class="col-md-4">
                 {{ form_start(mail_form) }}
+                    {{ form_label(mail_form.email) }}
                     {{ form_widget(mail_form.email) }}
-                    <button class="col-md-6 offset-md-6 btn btn-primary" type="submit">Changer e-mail</button>
+                    <button class="col-md-6 offset-md-6 btn btn-primary btn-profil" type="submit">Changer e-mail</button>
                 {{ form_end(mail_form) }}
             </div>
             <div class="col-md-4">
                 {{ form_start(password_form) }}
+                    {{ form_label(password_form.password) }}
                     {{ form_widget(password_form.password) }}
+                    {{ form_label(password_form.retypePassword) }}
                     {{ form_widget(password_form.retypePassword) }}
-                    <button class="col-md-6 offset-md-6 btn btn-primary" type="submit">Changer password</button>
+                    <button class="col-md-6 offset-md-6 btn btn-primary btn-profil" type="submit">Changer password</button>
                 {{ form_end(password_form) }}
             </div>
         </section>
@@ -49,6 +52,7 @@
                                         <h5 class="card-title">{{ recipe.name }}</h5>
                                         <p class="card-text">{{ recipe.preparation }}</p>
                                     </div>
+                                    <a class="btn btn-primary" href="{{ path('recipe_show', {'id': recipe.id}) }}">Voir</a>
                                 </div>
                             </div>
                         </div>

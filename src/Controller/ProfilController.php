@@ -114,7 +114,6 @@ class ProfilController implements ProfilControllerInterface
 
         return new Response($twig->render('profil/profil.html.twig', [
             'contribution_count' => count($authoredRecipeList),
-            'nbrFavorites' => 3,
             'authored_recipe_list' => $authoredRecipeList,
             'authored_recipe_image' => $authoredRecipeImage,
             'mail_form' => $mailForm->createView(),
