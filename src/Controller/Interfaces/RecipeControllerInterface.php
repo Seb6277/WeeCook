@@ -13,11 +13,18 @@ namespace App\Controller\Interfaces;
 use App\Repository\IngredientRepository;
 use App\Service\FileUploader;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Twig\Environment;
 
 interface RecipeControllerInterface
 {
-    public function __construct(ObjectManager $manager);
-    public function __invoke(Request $request, FileUploader $fileUploader, ObjectManager $manager):Response;
+    public function __construct(ObjectManager $manager, TokenStorageInterface $tokenStorage);
+    public function __invoke(Environment $twig,
+                             Request $request,
+                             FileUploader $fileUploader,
+                             ObjectManager $manager,
+                             FormFactoryInterface $formFactory):Response;
 }

@@ -3,38 +3,36 @@
 {% block body %}
     <div class="container profil_layout">
         <div class="row">
-            <h1>Profil de ...</h1>
+            <h1>Profil de {{ app.user.username }}</h1>
         </div>
+        {% for label, messages in app.flashes(['info', 'error']) %}
+            {% for message in messages %}
+                <div class="row flash-message-{{ label }}">
+                    <p>{{ message }}</p>
+                </div>
+            {% endfor %}
+        {% endfor %}
         <section class="row">
             <div class="col-md-4">
                 <div class="row">
-                    <p>Nombre de contribution : xx</p>
-                </div>
-                <div class="row">
-                    <p>Nombre de modération : xx</p>
+                    <p>Nombre de contribution : {{ contribution_count }}</p>
                 </div>
             </div>
             <div class="col-md-4">
-                <form>
-                    <div class="form-group">
-                        <label for="email">E-mail</label>
-                        <input type="email" class="form-control"/>
-                    </div>
-                    <button class="col-md-6 offset-md-6 btn btn-primary" type="submit">Changer e-mail</button>
-                </form>
+                {{ form_start(mail_form) }}
+                    {{ form_label(mail_form.email) }}
+                    {{ form_widget(mail_form.email) }}
+                    <button class="col-md-6 offset-md-6 btn btn-primary btn-profil" type="submit">Changer e-mail</button>
+                {{ form_end(mail_form) }}
             </div>
             <div class="col-md-4">
-                <form>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="check-password">Retaper password</label>
-                        <input type="password" class="form-control"/>
-                    </div>
-                    <button class="col-md-6 offset-md-6 btn btn-primary" type="submit">Changer password</button>
-                </form>
+                {{ form_start(password_form) }}
+                    {{ form_label(password_form.password) }}
+                    {{ form_widget(password_form.password) }}
+                    {{ form_label(password_form.retypePassword) }}
+                    {{ form_widget(password_form.retypePassword) }}
+                    <button class="col-md-6 offset-md-6 btn btn-primary btn-profil" type="submit">Changer password</button>
+                {{ form_end(password_form) }}
             </div>
         </section>
         <section class="row favorite-section">
@@ -42,24 +40,26 @@
                 <div class="row">
                     <h4>Vos recettes</h4>
                 </div>
-                {% for recipe in 0..nbrRecipe %}
+                {% for recipe in authored_recipe_list %}
                     <div class="row">
-                        <div class="card mb-3" style="max-width: 540px;">
+                        <div class="card mb-3" style="width: 500px;">
                             <div class="row no-gutters">
                                 <div class="col-md-4">
-                                    <img src="http://lorempixel.com/150/150/food" class="card-img" alt="...">
+                                    <img src="{{ asset(authored_recipe_image[loop.index0]) }}" class="card-img" alt="...">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
-                                        <h5 class="card-title">Nom de la recette</h5>
-                                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, aliquam animi assumenda atque dolorum ducimus...</p>
+                                        <h5 class="card-title">{{ recipe.name }}</h5>
+                                        <p class="card-text">{{ recipe.preparation }}</p>
                                     </div>
+                                    <a class="btn btn-primary" href="{{ path('recipe_show', {'id': recipe.id}) }}">Voir</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 {% endfor %}
             </div>
+            {#TODO : Favorite feature
             <div class="col-md-6">
                 <div class="row">
                     <h4>Vos favoris</h4>
@@ -82,6 +82,7 @@
                     </div>
                 {% endfor %}
             </div>
+            #}
         </section>
     </div>
 {% endblock %}

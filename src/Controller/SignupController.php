@@ -13,6 +13,7 @@ namespace App\Controller;
 use App\Controller\Interfaces\SignupControllerInterface;
 use App\Entity\User;
 use App\Form\SingupType;
+use App\Utils\UserUtils;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,7 +60,7 @@ class SignupController extends AbstractController implements SignupControllerInt
         if ($form->isSubmitted() && $form->isValid()) {
             // If password equal password validation
             $dataForm = $request->request->get('singup');
-            if ($this->checkPassword($user->getPassword(), $dataForm['retypePassword'])) {
+            if (UserUtils::checkPassword($user->getPassword(), $dataForm['retypePassword'])) {
                 // Register the user
                 $user = $form->getData();
                 $user->setCreatedAt(new \DateTime);
@@ -88,22 +89,5 @@ class SignupController extends AbstractController implements SignupControllerInt
             'signupForm' => $form->createView(),
             'errors' => $error
         ]);
-    }
-
-    /**
-     * Compare if the passwords field are equals
-     *
-     * @param string $password
-     * @param string $passwordCheck
-     * @return bool
-     */
-    public static function checkPassword(string $password, string $passwordCheck): bool
-    {
-        if ($password === $passwordCheck)
-        {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

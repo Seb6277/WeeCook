@@ -15,25 +15,33 @@ use App\Entity\IngredientQuantity;
 use App\Entity\Recipe;
 use App\Form\EditRecipeType;
 use App\Service\FileUploader;
+use App\Utils\UserUtils;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Twig\Environment;
 
-class RecipeController extends AbstractController implements RecipeControllerInterface
+class RecipeController implements RecipeControllerInterface
 {
 
     private $ingredientRepository;
     private $manager;
+    private $twig;
+    private $tokenStorage;
 
-    public function __construct(ObjectManager $manager)
+    public function __construct(ObjectManager $manager, TokenStorageInterface $tokenStorage)
     {
         $this->manager = $manager;
         $this->ingredientRepository = $manager->getRepository(Ingredient::class);
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -45,12 +53,16 @@ class RecipeController extends AbstractController implements RecipeControllerInt
      *
      * @Route("/create", name="creation_page", methods={"GET", "POST"})
      */
-    public function __invoke(Request $request, FileUploader $fileUploader, ObjectManager $manager): Response
+    public function __invoke(Environment $twig,
+                             Request $request,
+                             FileUploader $fileUploader,
+                             ObjectManager $manager,
+                             FormFactoryInterface $formFactory): Response
     {
         $ingredientInDatabase = $this->ingredientRepository->findAll();
         $recipe = new Recipe();
 
-        $form = $this->createForm(EditRecipeType::class, $recipe);
+        $form = $formFactory->create(EditRecipeType::class, $recipe);
 
         $form->handleRequest($request);
 
@@ -79,20 +91,22 @@ class RecipeController extends AbstractController implements RecipeControllerInt
 
             // Finish the Recipe object and flush all by cascade
             $recipe->setCreatedAt(new \DateTime());
-            $recipe->setAuthor($this->getUser());
+            $recipe->setAuthor($this->tokenStorage->getToken()->getUser());
             $recipe->setValidation(false);
             $manager->persist($recipe);
             $manager->flush();
 
-            $this->redirectToRoute('home');
+            $request->getSession()->getFlashBag()->add('info', 'La recette à bien était créer !');
+
+            return new RedirectResponse('/', 302);
 
         }
 
-        return $this->render('recipe/create.html.twig', [
+        return new Response($twig->render('recipe/create.html.twig', [
             //serialized ingredient send to React via HTML
             'ingredients' => $this->serializeToJson($ingredientInDatabase),
             'recipe_form' => $form->createView()
-        ]);
+        ]));
     }
 
     /**

@@ -66,6 +66,8 @@ class RecipeRepository extends ServiceEntityRepository implements RecipeReposito
     public function getThreeLatest()
     {
         return $this->createQueryBuilder('recipe')
+            ->andWhere('recipe.validation = :val')
+            ->setParameter('val', 1)
             ->orderBy('recipe.createdAt', 'DESC')
             ->setMaxResults(3)
             ->getQuery()
@@ -111,6 +113,20 @@ class RecipeRepository extends ServiceEntityRepository implements RecipeReposito
         return $this->createQueryBuilder('recipe')
             ->andWhere('recipe.validation = :val')
             ->setParameter('val', 1)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    /**
+     * @param $authorId
+     * @return mixed
+     */
+    public function getRecipeByAuthor($authorId)
+    {
+        return $this->createQueryBuilder('recipe')
+            ->andWhere('recipe.author = :val')
+            ->setParameter('val', $authorId)
             ->getQuery()
             ->getResult()
             ;

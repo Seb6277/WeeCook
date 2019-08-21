@@ -10,6 +10,7 @@
 namespace App\Tests\Controller;
 
 use App\Controller\SignupController;
+use App\Utils\UserUtils;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -38,11 +39,11 @@ class SignupControllerTest extends WebTestCase
 
     public function testStaticPasswordRetypeValidation()
     {
-        $value = SignupController::checkPassword('test', 'test');
+        $value = UserUtils::checkPassword('test', 'test');
 
         self::assertEquals($value, true);
 
-        $value = SignupController::checkPassword('test', 'false');
+        $value = UserUtils::checkPassword('test', 'false');
 
         self::assertEquals($value, false);
     }
