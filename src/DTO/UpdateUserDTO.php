@@ -14,4 +14,5 @@ class UpdateUserDTO
 {
     public $email;
     public $password;
+    public $retypePassword;
 }

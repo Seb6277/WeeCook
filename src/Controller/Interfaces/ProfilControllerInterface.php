@@ -10,10 +10,23 @@
 namespace App\Controller\Interfaces;
 
 
+use App\DTO\UpdateUserDTO;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Twig\Environment;
 
 Interface ProfilControllerInterface
 {
-    public function __invoke(Environment $twig):Response;
+    public function __invoke(Environment $twig,
+                             Request $request,
+                             FormFactoryInterface $formFactory,
+                             UpdateUserDTO $updateUserDTO):Response;
+
+    public function __construct(EntityManagerInterface $manager,
+                                TokenStorageInterface $tokenStorage,
+                                UserPasswordEncoderInterface $passwordEncoder);
 }

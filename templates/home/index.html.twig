@@ -2,6 +2,13 @@
 
 {% block body %}
     <div class="container">
+        {% for label, messages in app.flashes(['info', 'error']) %}
+            {% for message in messages%}
+                <div class="row flash-message-{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
         <div class="head-row row">
             <div class="col-md-6">
                 <div class="row">

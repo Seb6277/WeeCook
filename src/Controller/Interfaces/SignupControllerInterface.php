@@ -19,5 +19,4 @@ interface SignupControllerInterface
 {
     public function __construct(UserPasswordEncoderInterface $passwordEncoder, ObjectManager $manager);
     public function __invoke(Request $request, ValidatorInterface $validator);
-    public static  function checkPassword(string $password, string $passwordCheck):bool;
 }
