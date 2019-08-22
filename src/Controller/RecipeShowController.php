@@ -23,6 +23,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Environment;
 
+/**
+ * Class RecipeShowController
+ * @package App\Controller
+ */
 class RecipeShowController implements RecipeShowControllerInterface
 {
     /**
@@ -47,7 +51,10 @@ class RecipeShowController implements RecipeShowControllerInterface
 
     /**
      * RecipeShowController constructor.
+     * @param SessionInterface $session
      * @param ObjectManager $manager
+     * @param TokenStorageInterface $tokenStorage
+     * @param Environment $twig
      */
     public function __construct(SessionInterface $session,
                                 ObjectManager $manager,
@@ -63,12 +70,13 @@ class RecipeShowController implements RecipeShowControllerInterface
     /**
      * @Route("/show/{id}", name="recipe_show", methods={"GET", "POST"}, requirements={"id" = "\d+"})
      *
-     * @param Environment $twig
-     * @return string
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function __invoke(Request $request, int $id):Response
     {

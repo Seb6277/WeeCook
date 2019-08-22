@@ -16,9 +16,7 @@ use App\Entity\Recipe;
 use App\Form\EditRecipeType;
 use App\Service\FileUploader;
 use App\Service\Interfaces\FileUploaderInterface;
-use App\Utils\UserUtils;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,16 +28,51 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Twig\Environment;
 
+/**
+ * Class RecipeController
+ * @package App\Controller
+ */
 class RecipeController implements RecipeControllerInterface
 {
 
+    /**
+     * @var \App\Repository\IngredientRepository|\Doctrine\Common\Persistence\ObjectRepository
+     */
     private $ingredientRepository;
+
+    /**
+     * @var ObjectManager
+     */
     private $manager;
+
+    /**
+     * @var Environment
+     */
     private $twig;
+
+    /**
+     * @var TokenStorageInterface
+     */
     private $tokenStorage;
+
+    /**
+     * @var FileUploaderInterface
+     */
     private $fileUploader;
+
+    /**
+     * @var FormFactoryInterface
+     */
     private $formFactory;
 
+    /**
+     * RecipeController constructor.
+     * @param ObjectManager $manager
+     * @param TokenStorageInterface $tokenStorage
+     * @param Environment $twig
+     * @param FileUploaderInterface $fileUploader
+     * @param FormFactoryInterface $formFactory
+     */
     public function __construct(ObjectManager $manager,
                                 TokenStorageInterface $tokenStorage,
                                 Environment $twig,
@@ -55,13 +88,13 @@ class RecipeController implements RecipeControllerInterface
     }
 
     /**
-     * @param Request $request
-     * @param FileUploader $fileUploader
-     * @param ObjectManager $manager
-     * @return Response
-     * @throws \Exception
-     *
      * @Route("/create", name="creation_page", methods={"GET", "POST"})
+     *
+     * @param Request $request
+     * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function __invoke(Request $request): Response
     {

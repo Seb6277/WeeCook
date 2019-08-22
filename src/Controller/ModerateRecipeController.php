@@ -24,6 +24,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
+/**
+ * Class ModerateRecipeController
+ * @package App\Controller
+ */
 class ModerateRecipeController implements ModerateRecipeControllerInterface
 {
     /**
@@ -31,13 +35,27 @@ class ModerateRecipeController implements ModerateRecipeControllerInterface
      */
     private $manager;
 
+    /**
+     * @var Environment
+     */
     private $twig;
+
+    /**
+     * @var FormFactoryInterface
+     */
     private $formFactory;
+
+    /**
+     * @var ModerationDTOInterface
+     */
     private $moderationDTO;
 
     /**
      * ModerateRecipeController constructor.
-     * @param $manager
+     * @param ObjectManager $manager
+     * @param Environment $twig
+     * @param FormFactoryInterface $formFactory
+     * @param ModerationDTOInterface $moderationDTO
      */
     public function __construct(ObjectManager $manager,
                                 Environment $twig,
@@ -53,7 +71,7 @@ class ModerateRecipeController implements ModerateRecipeControllerInterface
     /**
      * @Route("/moderate", name="moderation_page", methods={"GET", "POST"})
      *
-     * @param Environment $twig
+     * @param Request $request
      * @return Response
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError

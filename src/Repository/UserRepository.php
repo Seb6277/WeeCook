@@ -21,6 +21,10 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class UserRepository extends ServiceEntityRepository
 {
+    /**
+     * UserRepository constructor.
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, User::class);
@@ -55,6 +59,10 @@ class UserRepository extends ServiceEntityRepository
     }
     */
 
+    /**
+     * @param $user
+     * @return mixed
+     */
     public function findByName($user)
     {
         return $this->createQueryBuilder('user')

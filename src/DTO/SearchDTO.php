@@ -12,6 +12,10 @@ namespace App\DTO;
 
 use App\DTO\Interfaces\SearchDTOInterface;
 
+/**
+ * Class SearchDTO
+ * @package App\DTO
+ */
 class SearchDTO implements SearchDTOInterface
 {
     public $searchString;

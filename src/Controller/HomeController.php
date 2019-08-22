@@ -17,7 +17,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
-
+/**
+ * Class HomeController
+ * @package App\Controller
+ */
 class HomeController implements HomeControllerInterface
 {
     /**
@@ -25,11 +28,15 @@ class HomeController implements HomeControllerInterface
      */
     private $manager;
 
+    /**
+     * @var Environment
+     */
     private $twig;
 
     /**
      * HomeController constructor.
      * @param ObjectManager $manager
+     * @param Environment $twig
      */
     public function __construct(ObjectManager $manager, Environment $twig)
     {
@@ -40,7 +47,6 @@ class HomeController implements HomeControllerInterface
     /**
      * @Route("/", name="home", methods={"GET"})
      *
-     * @param Environment $twig
      * @return Response
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError

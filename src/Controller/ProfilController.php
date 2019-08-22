@@ -46,7 +46,14 @@ class ProfilController implements ProfilControllerInterface
      */
     private $passwordEncoder;
 
+    /**
+     * @var Environment
+     */
     private $twig;
+
+    /**
+     * @var FormFactoryInterface
+     */
     private $formFactory;
 
     /**
@@ -54,6 +61,8 @@ class ProfilController implements ProfilControllerInterface
      * @param EntityManagerInterface $manager
      * @param TokenStorageInterface $tokenStorage
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param Environment $twig
+     * @param FormFactoryInterface $formFactory
      */
     public function __construct(EntityManagerInterface $manager,
                                 TokenStorageInterface $tokenStorage,
@@ -70,6 +79,12 @@ class ProfilController implements ProfilControllerInterface
 
     /**
      * @Route("/profil", name="profil", methods={"GET", "POST"})
+     *
+     * @param Request $request
+     * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
     public function __invoke(Request $request):Response
     {

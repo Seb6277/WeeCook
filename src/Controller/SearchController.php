@@ -23,6 +23,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
+/**
+ * Class SearchController
+ * @package App\Controller
+ */
 class SearchController implements SearchControllerInterface
 {
     /**
@@ -30,13 +34,27 @@ class SearchController implements SearchControllerInterface
      */
     private $manager;
 
+    /**
+     * @var Environment
+     */
     private $twig;
+
+    /**
+     * @var FormFactoryInterface
+     */
     private $formFactory;
+
+    /**
+     * @var SearchDTOInterface
+     */
     private $searchDTO;
 
     /**
      * SearchController constructor.
      * @param ObjectManager $manager
+     * @param Environment $twig
+     * @param FormFactoryInterface $formFactory
+     * @param SearchDTOInterface $searchDTO
      */
     public function __construct(ObjectManager $manager,
                                 Environment $twig,
@@ -51,7 +69,8 @@ class SearchController implements SearchControllerInterface
 
     /**
      * @Route("/search", name="search", methods={"GET", "POST"})
-     * @param Environment $twig
+     *
+     * @param Request $request
      * @return Response
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError

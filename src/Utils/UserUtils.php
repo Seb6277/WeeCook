@@ -12,8 +12,17 @@ namespace App\Utils;
 
 use App\Utils\Interfaces\UserUtilsInterface;
 
+/**
+ * Class UserUtils
+ * @package App\Utils
+ */
 class UserUtils implements UserUtilsInterface
 {
+    /**
+     * @param string $password
+     * @param string $passwordCheck
+     * @return bool
+     */
     public static function checkPassword(string $password, string $passwordCheck): bool
     {
         if ($password === $passwordCheck)

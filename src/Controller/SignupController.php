@@ -22,16 +22,32 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * Class SignupController
+ * @package App\Controller
+ */
 class SignupController extends AbstractController implements SignupControllerInterface
 {
+    /**
+     * @var UserPasswordEncoderInterface
+     */
     private $passwordEncoder;
+
+    /**
+     * @var ObjectManager
+     */
     private $manager;
+
+    /**
+     * @var ValidatorInterface
+     */
     private $validator;
 
     /**
      * SignupController constructor.
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param ObjectManager $manager
+     * @param ValidatorInterface $validator
      */
     public function __construct(UserPasswordEncoderInterface $passwordEncoder,
                                 ObjectManager $manager,
@@ -46,8 +62,7 @@ class SignupController extends AbstractController implements SignupControllerInt
      * @Route("/signup", name="signup", methods={"GET", "POST"})
      *
      * @param Request $request
-     * @param ValidatorInterface $validator
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws \Exception
      */
     public function __invoke(Request $request):Response

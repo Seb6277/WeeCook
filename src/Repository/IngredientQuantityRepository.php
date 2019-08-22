@@ -21,6 +21,10 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class IngredientQuantityRepository extends ServiceEntityRepository
 {
+    /**
+     * IngredientQuantityRepository constructor.
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, IngredientQuantity::class);
