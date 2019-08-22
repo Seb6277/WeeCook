@@ -54,4 +54,21 @@ class FavoriteRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * @param $user
+     * @param $recipe
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getFavoriteExist($user, $recipe)
+    {
+        return $this->createQueryBuilder('favorite')
+            ->andWhere('favorite.recipe = :rec')
+            ->setParameter('rec', $recipe)
+            ->andWhere('favorite.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
