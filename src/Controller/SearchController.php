@@ -10,6 +10,7 @@
 namespace App\Controller;
 
 use App\Controller\Interfaces\SearchControllerInterface;
+use App\DTO\Interfaces\SearchDTOInterface;
 use App\DTO\SearchDTO;
 use App\Entity\Recipe;
 use App\Form\Interfaces\SearchRecipeFormTypeInterface;
@@ -29,13 +30,23 @@ class SearchController implements SearchControllerInterface
      */
     private $manager;
 
+    private $twig;
+    private $formFactory;
+    private $searchDTO;
+
     /**
      * SearchController constructor.
      * @param ObjectManager $manager
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(ObjectManager $manager,
+                                Environment $twig,
+                                FormFactoryInterface $formFactory,
+                                SearchDTOInterface $searchDTO)
     {
         $this->manager = $manager;
+        $this->twig = $twig;
+        $this->formFactory = $formFactory;
+        $this->searchDTO = $searchDTO;
     }
 
     /**
@@ -47,14 +58,11 @@ class SearchController implements SearchControllerInterface
      * @throws \Twig\Error\SyntaxError
      */
     public function __invoke(
-        Request $request,
-        Environment $twig,
-        FormFactoryInterface $formFactory,
-        SearchDTO $searchDTO):Response
+        Request $request):Response
     {
         $imageList = [];
 
-        $form = $formFactory->create(SearchRecipeFormType::class);
+        $form = $this->formFactory->create(SearchRecipeFormType::class);
 
         $recipes = $this->manager->getRepository(Recipe::class)->findAllValid();
 
@@ -62,16 +70,16 @@ class SearchController implements SearchControllerInterface
 
         if ($form->isSubmitted() && $form->isValid())
         {
-            $searchDTO->searchString = $form->getData();
+            $this->searchDTO->searchString = $form->getData();
             $recipes = $this->manager->getRepository(Recipe::class)
-                ->getRecipeByName((string)$searchDTO);
+                ->getRecipeByName((string)$this->searchDTO);
         }
 
         foreach ($recipes as $recipe)
         {
             array_push($imageList, RecipeUtils::getImageUri($recipe));
         }
-        return new Response($twig->render('search/search.html.twig', [
+        return new Response($this->twig->render('search/search.html.twig', [
             'recipes' => $recipes,
             'images' => $imageList,
             'form' => $form->createView()

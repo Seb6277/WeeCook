@@ -17,6 +17,6 @@ use Twig\Environment;
 
 interface HomeControllerInterface
 {
-    public function __construct(ObjectManager $manager);
-    public function __invoke(Environment $twig):Response;
+    public function __construct(ObjectManager $manager, Environment $twig);
+    public function __invoke():Response;
 }

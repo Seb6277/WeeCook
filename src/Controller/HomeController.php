@@ -25,13 +25,16 @@ class HomeController implements HomeControllerInterface
      */
     private $manager;
 
+    private $twig;
+
     /**
      * HomeController constructor.
      * @param ObjectManager $manager
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(ObjectManager $manager, Environment $twig)
     {
         $this->manager = $manager;
+        $this->twig = $twig;
     }
 
     /**
@@ -43,12 +46,12 @@ class HomeController implements HomeControllerInterface
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function __invoke(Environment $twig):Response
+    public function __invoke():Response
     {
         $repository = $this->manager->getRepository(Recipe::class);
         $recipes = $repository->getThreeLatest();
 
-        return new Response($twig->render('home/index.html.twig', [
+        return new Response($this->twig->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
             'recipe_image_1' => RecipeUtils::getHomeImageUri($recipes, 0),
             'recipe_image_2' => RecipeUtils::getHomeImageUri($recipes, 1),

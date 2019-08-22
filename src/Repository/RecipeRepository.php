@@ -10,7 +10,6 @@
 namespace App\Repository;
 
 use App\Entity\Recipe;
-use App\Repository\Interfaces\RecipeRepositoryInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -20,7 +19,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  * @method Recipe[]    findAll()
  * @method Recipe[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class RecipeRepository extends ServiceEntityRepository implements RecipeRepositoryInterface
+class RecipeRepository extends ServiceEntityRepository
 {
     /**
      * RecipeRepository constructor.

@@ -19,7 +19,10 @@ use Twig\Environment;
 
 interface RecipeShowControllerInterface
 {
-    public function __construct(SessionInterface $session, ObjectManager $manager, TokenStorageInterface $tokenStorage);
+    public function __construct(SessionInterface $session,
+                                ObjectManager $manager,
+                                TokenStorageInterface $tokenStorage,
+                                Environment $twig);
 
-    public function __invoke(Request $request, Environment $twig, int $id):Response;
+    public function __invoke(Request $request, int $id):Response;
 }

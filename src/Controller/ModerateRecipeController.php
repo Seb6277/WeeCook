@@ -10,6 +10,7 @@
 namespace App\Controller;
 
 use App\Controller\Interfaces\ModerateRecipeControllerInterface;
+use App\DTO\Interfaces\ModerationDTOInterface;
 use App\DTO\ModerationDTO;
 use App\Entity\Ingredient;
 use App\Entity\IngredientQuantity;
@@ -30,13 +31,23 @@ class ModerateRecipeController implements ModerateRecipeControllerInterface
      */
     private $manager;
 
+    private $twig;
+    private $formFactory;
+    private $moderationDTO;
+
     /**
      * ModerateRecipeController constructor.
      * @param $manager
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(ObjectManager $manager,
+                                Environment $twig,
+                                FormFactoryInterface $formFactory,
+                                ModerationDTOInterface $moderationDTO)
     {
         $this->manager = $manager;
+        $this->formFactory = $formFactory;
+        $this->twig = $twig;
+        $this->moderationDTO = $moderationDTO;
     }
 
     /**
@@ -48,11 +59,7 @@ class ModerateRecipeController implements ModerateRecipeControllerInterface
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function __invoke(
-        Request $request,
-        Environment $twig,
-        FormFactoryInterface $formFactory,
-        ModerationDTO $moderationDTO):Response
+    public function __invoke(Request $request):Response
     {
         $ingredients = [];
         $quantities = [];
@@ -71,7 +78,7 @@ class ModerateRecipeController implements ModerateRecipeControllerInterface
         {
             $recipe = $recipe_array[0];
         } else {
-            return new Response($twig->render('recipe/no_recipe_moderate.html.twig'));
+            return new Response($this->twig->render('recipe/no_recipe_moderate.html.twig'));
         }
 
 
@@ -93,7 +100,7 @@ class ModerateRecipeController implements ModerateRecipeControllerInterface
          * Handle the validation section
          */
 
-        $form = $formFactory->create(ModerationType::class);
+        $form = $this->formFactory->create(ModerationType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
@@ -113,7 +120,7 @@ class ModerateRecipeController implements ModerateRecipeControllerInterface
             $this->manager->flush();
         }
 
-        return new Response($twig->render('recipe/moderate.html.twig', [
+        return new Response($this->twig->render('recipe/moderate.html.twig', [
             'preparation' => $recipe->getPreparation(),
             'recipe_name' => $recipe->getName(),
             'ingredients' => $ingredients,

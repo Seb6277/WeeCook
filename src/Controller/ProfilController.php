@@ -10,7 +10,6 @@
 namespace App\Controller;
 
 use App\Controller\Interfaces\ProfilControllerInterface;
-use App\DTO\UpdateUserDTO;
 use App\Entity\Recipe;
 use App\Form\EditMailType;
 use App\Form\EditPasswordType;
@@ -47,6 +46,9 @@ class ProfilController implements ProfilControllerInterface
      */
     private $passwordEncoder;
 
+    private $twig;
+    private $formFactory;
+
     /**
      * ProfilController constructor.
      * @param EntityManagerInterface $manager
@@ -55,21 +57,21 @@ class ProfilController implements ProfilControllerInterface
      */
     public function __construct(EntityManagerInterface $manager,
                                 TokenStorageInterface $tokenStorage,
-                                UserPasswordEncoderInterface $passwordEncoder)
+                                UserPasswordEncoderInterface $passwordEncoder,
+                                Environment $twig,
+                                FormFactoryInterface $formFactory)
     {
         $this->manager = $manager;
         $this->tokenStorage = $tokenStorage;
         $this->passwordEncoder = $passwordEncoder;
+        $this->twig = $twig;
+        $this->formFactory = $formFactory;
     }
 
     /**
      * @Route("/profil", name="profil", methods={"GET", "POST"})
      */
-    public function __invoke(
-        Environment $twig,
-        Request $request,
-        FormFactoryInterface $formFactory,
-        UpdateUserDTO $updateUserDTO):Response
+    public function __invoke(Request $request):Response
     {
         $user = $this->getUser();
         $authoredRecipeImage = [];
@@ -83,8 +85,8 @@ class ProfilController implements ProfilControllerInterface
             array_push($authoredRecipeImage, $image);
         }
 
-        $mailForm = $formFactory->create(EditMailType::class);
-        $passwordForm = $formFactory->create(EditPasswordType::class);
+        $mailForm = $this->formFactory->create(EditMailType::class);
+        $passwordForm = $this->formFactory->create(EditPasswordType::class);
 
         $mailForm->handleRequest($request);
         $passwordForm->handleRequest($request);
@@ -112,7 +114,7 @@ class ProfilController implements ProfilControllerInterface
             }
         }
 
-        return new Response($twig->render('profil/profil.html.twig', [
+        return new Response($this->twig->render('profil/profil.html.twig', [
             'contribution_count' => count($authoredRecipeList),
             'authored_recipe_list' => $authoredRecipeList,
             'authored_recipe_image' => $authoredRecipeImage,

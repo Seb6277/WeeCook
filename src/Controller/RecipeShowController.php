@@ -14,7 +14,6 @@ use App\Entity\Favorite;
 use App\Entity\Ingredient;
 use App\Entity\IngredientQuantity;
 use App\Entity\Recipe;
-use App\Entity\User;
 use App\Utils\RecipeUtils;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,14 +41,23 @@ class RecipeShowController implements RecipeShowControllerInterface
     private $session;
 
     /**
+     * @var Environment
+     */
+    private $twig;
+
+    /**
      * RecipeShowController constructor.
      * @param ObjectManager $manager
      */
-    public function __construct(SessionInterface $session, ObjectManager $manager, TokenStorageInterface $tokenStorage)
+    public function __construct(SessionInterface $session,
+                                ObjectManager $manager,
+                                TokenStorageInterface $tokenStorage,
+                                Environment $twig)
     {
         $this->manager = $manager;
         $this->tokenStorage = $tokenStorage;
         $this->session = $session;
+        $this->twig = $twig;
     }
 
     /**
@@ -62,7 +70,7 @@ class RecipeShowController implements RecipeShowControllerInterface
      * @throws \Twig\Error\SyntaxError
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function __invoke(Request $request, Environment $twig, int $id):Response
+    public function __invoke(Request $request, int $id):Response
     {
         $ingredients = [];
         $quantities = [];
@@ -127,7 +135,7 @@ class RecipeShowController implements RecipeShowControllerInterface
             }
         }
         
-        return new Response($twig->render('recipe/show.html.twig', [
+        return new Response($this->twig->render('recipe/show.html.twig', [
             'controller_name' => 'RecipeShowController',
             'preparation' => $recipe->getPreparation(),
             'recipe_name' => $recipe->getName(),
