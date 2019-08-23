@@ -1,3 +1,11 @@
+/*!
+ * Created with PHPStorm
+ * Date: 31/7/2019
+ * Time: 11:2
+ * Author: S. Carpentier
+ * Mail: sebastien.carpentier89@gmail.com
+ */
+
 @import 'signin.scss';
 @import 'signup.scss';
 @import 'search.scss';
@@ -5,6 +13,7 @@
 @import 'moderate.scss';
 @import 'create.scss';
 @import 'profil.scss';
+@import "no_recipe.scss";
 
 nav{
   background-color: #FFD858;
@@ -38,7 +47,7 @@ nav{
       margin-top: 20px;
       margin-bottom: 20px;
       height: 300px;
-      width: 500px;
+      width: inherit;
       box-shadow: 5px 5px 10px grey;
     }
   }
@@ -50,5 +59,36 @@ footer{
     padding-top: 20px;
     align-items: center;
     text-align: center;
+  }
+}
+
+.flash-message-error{
+  background-color: rgba(255,0,0,0.6);
+  margin-bottom: 30px;
+  border-radius: 0.25rem;
+  p{
+    margin-top: 1rem;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.flash-message-info{
+  background-color: rgba(0,255,0,0.6);
+  margin-bottom: 30px;
+  border-radius: 0.25rem;
+  p{
+    margin-top: 1rem;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .signup-image-row{
+    display: none;
+  }
+  .btn-action{
+    margin-bottom: 30px;
   }
 }

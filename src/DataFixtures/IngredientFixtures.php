@@ -1,4 +1,11 @@
 <?php
+/**
+ * Created with PHPStorm
+ * Date: 31/7/2019
+ * Time: 11:2
+ * Author: S. Carpentier
+ * Mail: sebastien.carpentier89@gmail.com
+ */
 
 namespace App\DataFixtures;
 
@@ -6,8 +13,15 @@ use App\Entity\Ingredient;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
+/**
+ * Class IngredientFixtures
+ * @package App\DataFixtures
+ */
 class IngredientFixtures extends Fixture
 {
+    /**
+     * @param ObjectManager $manager
+     */
     public function load(ObjectManager $manager)
     {
         $faker = \Faker\Factory::create();
@@ -30,6 +44,11 @@ class IngredientFixtures extends Fixture
         $manager->flush();
     }
 
+    /**
+     * @param $that
+     * @param $inThat
+     * @return bool|string
+     */
     private function after($that, $inThat)
     {
         if (!is_bool(strpos($inThat, $that)))

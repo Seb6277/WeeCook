@@ -1,6 +1,17 @@
 {% extends 'recipe/_base_recipe.hml.twig' %}
 
 {% block page %}
+    <div class="row favorite">
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <form method="post">
+            {% if is_favorite %}
+            <button type="submit" class="btn btn-primary">Retirer des favoris</button>
+            {% else %}
+            <button type="submit" class="btn btn-primary">Ajouter au favoris</button>
+            {% endif %}
+        </form>
+        {% endif %}
+    </div>
     <div class="row similar-recipe">
         <h3 class="col-md-12">Recettes similaires :</h3>
         <img src="http://lorempixel.com/150/150/food" class="col-md-4">

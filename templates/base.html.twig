@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}WeeCook !{% endblock %}</title>
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
@@ -33,7 +34,7 @@
             </li>
             {% else %}
             <li class="nav-item">
-                <a class="nav-link">Bonjour {{ app.user.username }} !</a>
+                <a class="nav-link" href="{{ path('profil') }}">Bonjour {{ app.user.username }} !</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ path('logout') }}">Déconnexion</a>

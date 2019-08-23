@@ -1,4 +1,11 @@
 <?php
+/**
+ * Created with PHPStorm
+ * Date: 31/7/2019
+ * Time: 11:2
+ * Author: S. Carpentier
+ * Mail: sebastien.carpentier89@gmail.com
+ */
 
 namespace App\Form;
 
@@ -12,9 +19,17 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
+/**
+ * Class EditRecipeType
+ * @package App\Form
+ */
 class EditRecipeType extends AbstractType
 {
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -42,6 +57,9 @@ class EditRecipeType extends AbstractType
         ;
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

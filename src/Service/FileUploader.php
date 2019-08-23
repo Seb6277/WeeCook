@@ -1,13 +1,24 @@
 <?php
-
+/**
+ * Created with PHPStorm
+ * Date: 31/7/2019
+ * Time: 11:2
+ * Author: S. Carpentier
+ * Mail: sebastien.carpentier89@gmail.com
+ */
 
 namespace App\Service;
 
 
+use App\Service\Interfaces\FileUploaderInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class FileUploader
+/**
+ * Class FileUploader
+ * @package App\Service
+ */
+class FileUploader implements FileUploaderInterface
 {
     /**
      * @var string
@@ -18,7 +29,7 @@ class FileUploader
      * FileUploader constructor.
      * @param $targetDirectory
      */
-    public function __construct($targetDirectory)
+    public function __construct(string $targetDirectory)
     {
         $this->targetDirectory = $targetDirectory;
     }

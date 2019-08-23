@@ -1,8 +1,36 @@
+/*!
+ * Created with PHPStorm
+ * Date: 6/8/2019
+ * Time: 0:15
+ * Author: S. Carpentier
+ * Mail: sebastien.carpentier89@gmail.com
+ */
+
 .search-content{
   h1{
     text-align: center;
   }
   .card{
     margin-top: 20px;
+    box-shadow: 5px 5px 10px grey;
+  }
+  .card-body{
+    height: 200px;
+  }
+  img{
+    height: 200px;
+  }
+}
+.search-button{
+  margin-top: 30px;
+}
+
+@media screen and (max-width: 640px){
+  .search-button{
+    margin-bottom: 20px;
+  }
+  .card{
+    margin-top: 0;
+    margin-bottom: 20px;
   }
 }

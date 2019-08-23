@@ -1,4 +1,11 @@
 <?php
+/**
+ * Created with PHPStorm
+ * Date: 31/7/2019
+ * Time: 11:2
+ * Author: S. Carpentier
+ * Mail: sebastien.carpentier89@gmail.com
+ */
 
 namespace App\Entity;
 
@@ -66,6 +73,11 @@ class Recipe
      * @ORM\OneToMany(targetEntity="App\Entity\Favorite", mappedBy="recipe", orphanRemoval=true)
      */
     private $favorite;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $validation;
 
     public function __construct()
     {
@@ -158,6 +170,18 @@ class Recipe
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getValidation()
+    {
+        return $this->validation;
+    }
+
+    public function setValidation(bool $validation)
+    {
+        $this->validation = $validation;
 
         return $this;
     }

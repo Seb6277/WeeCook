@@ -1,5 +1,11 @@
 <?php
-
+/**
+ * Created with PHPStorm
+ * Date: 31/7/2019
+ * Time: 11:2
+ * Author: S. Carpentier
+ * Mail: sebastien.carpentier89@gmail.com
+ */
 
 namespace App\Tests\Controller;
 
@@ -19,7 +25,7 @@ class ProfilControllerTest extends WebTestCase
     public function testProfilPageIsUp(){
         $this->client->request('GET', '/profil');
 
-        static::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        static::assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $this->client->getResponse()->getStatusCode());
     }
 
     public function testProfilPageIsRenderingCorrectly(){

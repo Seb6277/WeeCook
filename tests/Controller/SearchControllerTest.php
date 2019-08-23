@@ -1,4 +1,11 @@
 <?php
+/**
+ * Created with PHPStorm
+ * Date: 31/7/2019
+ * Time: 11:2
+ * Author: S. Carpentier
+ * Mail: sebastien.carpentier89@gmail.com
+ */
 
 namespace App\Tests\Controller;
 
@@ -12,12 +19,6 @@ class SearchControllerTest extends WebTestCase
     public function setUp(): void
     {
         $this->client = static::createClient();
-    }
-
-    public function testSearchPageIsUp() {
-        $this->client->request('GET', '/search');
-
-        static::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
     }
 
     public function testSearchInputIsRendering() {

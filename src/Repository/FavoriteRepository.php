@@ -1,4 +1,11 @@
 <?php
+/**
+ * Created with PHPStorm
+ * Date: 31/7/2019
+ * Time: 11:2
+ * Author: S. Carpentier
+ * Mail: sebastien.carpentier89@gmail.com
+ */
 
 namespace App\Repository;
 
@@ -14,6 +21,10 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class FavoriteRepository extends ServiceEntityRepository
 {
+    /**
+     * FavoriteRepository constructor.
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Favorite::class);
@@ -47,4 +58,30 @@ class FavoriteRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * @param $user
+     * @param $recipe
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getFavoriteExist($user, $recipe)
+    {
+        return $this->createQueryBuilder('favorite')
+            ->andWhere('favorite.recipe = :rec')
+            ->setParameter('rec', $recipe)
+            ->andWhere('favorite.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function getUserFavorites($user)
+    {
+        return $this->createQueryBuilder('favorite')
+            ->andWhere('favorite.user = :val')
+            ->setParameter('val', $user)
+            ->getQuery()
+            ->getResult();
+    }
 }

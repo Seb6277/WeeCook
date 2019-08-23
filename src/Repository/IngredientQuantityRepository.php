@@ -1,4 +1,11 @@
 <?php
+/**
+ * Created with PHPStorm
+ * Date: 31/7/2019
+ * Time: 11:2
+ * Author: S. Carpentier
+ * Mail: sebastien.carpentier89@gmail.com
+ */
 
 namespace App\Repository;
 
@@ -14,6 +21,10 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class IngredientQuantityRepository extends ServiceEntityRepository
 {
+    /**
+     * IngredientQuantityRepository constructor.
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, IngredientQuantity::class);
@@ -47,4 +58,18 @@ class IngredientQuantityRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * @param $recipeId
+     * @return mixed
+     */
+    public function getAllItemsByRecipe($recipeId)
+    {
+        return $this->createQueryBuilder('items')
+            ->andWhere('items.recipe = :val')
+            ->setParameter('val', $recipeId)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

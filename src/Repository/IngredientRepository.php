@@ -1,4 +1,11 @@
 <?php
+/**
+ * Created with PHPStorm
+ * Date: 31/7/2019
+ * Time: 11:2
+ * Author: S. Carpentier
+ * Mail: sebastien.carpentier89@gmail.com
+ */
 
 namespace App\Repository;
 
@@ -14,11 +21,20 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class IngredientRepository extends ServiceEntityRepository
 {
+    /**
+     * IngredientRepository constructor.
+     * @param RegistryInterface $registry
+     */
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Ingredient::class);
     }
 
+    /**
+     * @param $name
+     * @return mixed
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function findOneByName($name)
     {
         return $this->createQueryBuilder('ingredient')

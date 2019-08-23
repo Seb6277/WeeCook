@@ -8,12 +8,12 @@
                 {{ form_widget(recipe_form.name) }}
             </div>
             <div class="row">
-                <h4 class="col-md-3">Ingrédient</h4>
-                <h4 class="col-md-3">Quantité</h4>
-                <h4 class="col-md-4 offset-md-1">Ajouter une photo</h4>
+                <h4 class="col-md-3 col-sm-6">Ingrédient</h4>
+                <h4 class="col-md-3 col-sm-6">Quantité</h4>
+                <h4 class="col-md-4 offset-md-1 photo">Ajouter une photo</h4>
             </div>
             <div class="row">
-                <div class="col-md-6" id="create_form" data-items="{{ ingredients }}">
+                <div class="col-md-6 col-sm-12" id="create_form" data-items="{{ ingredients }}">
                     {#
                         Here comes webpack entrypoint 'create_form' for the React component who list ingredient dynamically
                         data-items used to transport ingredient list serialized in JSON

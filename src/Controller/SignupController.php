@@ -1,12 +1,19 @@
 <?php
-
+/**
+ * Created with PHPStorm
+ * Date: 31/7/2019
+ * Time: 11:2
+ * Author: S. Carpentier
+ * Mail: sebastien.carpentier89@gmail.com
+ */
 
 namespace App\Controller;
 
 
+use App\Controller\Interfaces\SignupControllerInterface;
 use App\Entity\User;
 use App\Form\SingupType;
-use App\Interfaces\SignupControllerInterface;
+use App\Utils\UserUtils;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,31 +22,50 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+/**
+ * Class SignupController
+ * @package App\Controller
+ */
 class SignupController extends AbstractController implements SignupControllerInterface
 {
+    /**
+     * @var UserPasswordEncoderInterface
+     */
     private $passwordEncoder;
+
+    /**
+     * @var ObjectManager
+     */
     private $manager;
+
+    /**
+     * @var ValidatorInterface
+     */
+    private $validator;
 
     /**
      * SignupController constructor.
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param ObjectManager $manager
+     * @param ValidatorInterface $validator
      */
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder, ObjectManager $manager)
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder,
+                                ObjectManager $manager,
+                                ValidatorInterface $validator)
     {
         $this->passwordEncoder = $passwordEncoder;
         $this->manager = $manager;
+        $this->validator = $validator;
     }
 
     /**
      * @Route("/signup", name="signup", methods={"GET", "POST"})
      *
      * @param Request $request
-     * @param ValidatorInterface $validator
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws \Exception
      */
-    public function __invoke(Request $request, ValidatorInterface $validator):Response
+    public function __invoke(Request $request):Response
     {
         $user  = new User();
         $error = null;
@@ -53,7 +79,7 @@ class SignupController extends AbstractController implements SignupControllerInt
         if ($form->isSubmitted() && $form->isValid()) {
             // If password equal password validation
             $dataForm = $request->request->get('singup');
-            if ($this->checkPassword($user->getPassword(), $dataForm['retypePassword'])) {
+            if (UserUtils::checkPassword($user->getPassword(), $dataForm['retypePassword'])) {
                 // Register the user
                 $user = $form->getData();
                 $user->setCreatedAt(new \DateTime);
@@ -82,22 +108,5 @@ class SignupController extends AbstractController implements SignupControllerInt
             'signupForm' => $form->createView(),
             'errors' => $error
         ]);
-    }
-
-    /**
-     * Compare if the passwords field are equals
-     *
-     * @param string $password
-     * @param string $passwordCheck
-     * @return bool
-     */
-    public static function checkPassword(string $password, string $passwordCheck): bool
-    {
-        if ($password === $passwordCheck)
-        {
-            return true;
-        } else {
-            return false;
-        }
     }
 }
