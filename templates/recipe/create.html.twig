@@ -22,6 +22,12 @@
                 <div class="col-md-6">
                     <div class="row">
                         {{ form_widget(recipe_form.image1) }}
+                        <h4 class="col-md-4">Categorie :</h4>
+                        <select class="form-control col-md-8" name="category" id="selectCategory">
+                            {% for category in category_list %}
+                                <option value="{{ category.category }}">{{ category.category }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
             </div>

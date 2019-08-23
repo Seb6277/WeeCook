@@ -13,9 +13,9 @@ use App\Controller\Interfaces\RecipeControllerInterface;
 use App\Entity\Ingredient;
 use App\Entity\IngredientQuantity;
 use App\Entity\Recipe;
+use App\Entity\RecipeCategory;
 use App\Form\EditRecipeType;
 use App\Service\FileUploader;
-use App\Service\Interfaces\FileUploaderInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -56,50 +56,52 @@ class RecipeController implements RecipeControllerInterface
     private $tokenStorage;
 
     /**
-     * @var FileUploaderInterface
-     */
-    private $fileUploader;
-
-    /**
      * @var FormFactoryInterface
      */
     private $formFactory;
+
+    /**
+     * @var \App\Repository\RecipeCategoryRepository|\Doctrine\Common\Persistence\ObjectRepository
+     */
+    private $categoryManager;
 
     /**
      * RecipeController constructor.
      * @param ObjectManager $manager
      * @param TokenStorageInterface $tokenStorage
      * @param Environment $twig
-     * @param FileUploaderInterface $fileUploader
      * @param FormFactoryInterface $formFactory
      */
     public function __construct(ObjectManager $manager,
                                 TokenStorageInterface $tokenStorage,
                                 Environment $twig,
-                                FileUploaderInterface $fileUploader,
                                 FormFactoryInterface $formFactory)
     {
         $this->manager = $manager;
         $this->ingredientRepository = $manager->getRepository(Ingredient::class);
         $this->tokenStorage = $tokenStorage;
         $this->twig = $twig;
-        $this->fileUploader = $fileUploader;
         $this->formFactory = $formFactory;
+        $this->categoryManager = $manager->getRepository(RecipeCategory::class);
     }
 
     /**
      * @Route("/create", name="creation_page", methods={"GET", "POST"})
      *
      * @param Request $request
+     * @param FileUploader $fileUploader
      * @return Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, FileUploader $fileUploader): Response
     {
         $ingredientInDatabase = $this->ingredientRepository->findAll();
         $recipe = new Recipe();
+        $categoryList = $this->categoryManager->findAll();
+
 
         $form = $this->formFactory->create(EditRecipeType::class, $recipe);
 
@@ -112,7 +114,7 @@ class RecipeController implements RecipeControllerInterface
             // Store name and preparation in $recipe
             $form->getData();
             $image1 = $form['image1']->getData();
-            $image1Name = $this->fileUploader->upload($image1);
+            $image1Name = $fileUploader->upload($image1);
             $recipe->setImage1($image1Name);
 
             // Retrieve ingredient[] and quantity[]
@@ -132,6 +134,7 @@ class RecipeController implements RecipeControllerInterface
             $recipe->setCreatedAt(new \DateTime());
             $recipe->setAuthor($this->tokenStorage->getToken()->getUser());
             $recipe->setValidation(false);
+            $recipe->setCategory($request->request->get('category'));
             $this->manager->persist($recipe);
             $this->manager->flush();
 
@@ -144,7 +147,8 @@ class RecipeController implements RecipeControllerInterface
         return new Response($this->twig->render('recipe/create.html.twig', [
             //serialized ingredient send to React via HTML
             'ingredients' => $this->serializeToJson($ingredientInDatabase),
-            'recipe_form' => $form->createView()
+            'recipe_form' => $form->createView(),
+            'category_list' => $categoryList
         ]));
     }
 
@@ -159,6 +163,7 @@ class RecipeController implements RecipeControllerInterface
         $items = $request->request->all();
         // Remove the edit_recipe key from the collection
         unset($items['edit_recipe']);
+        unset($items['category']);
         // Calculate the number of ingredient in the table (table length / 2)
         $itemsInTable = count($items) / 2;
         // For each $ingredientInTable push it into new table $returnedIngredient
