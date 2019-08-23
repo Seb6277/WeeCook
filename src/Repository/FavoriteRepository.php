@@ -75,4 +75,13 @@ class FavoriteRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function getUserFavorites($user)
+    {
+        return $this->createQueryBuilder('favorite')
+            ->andWhere('favorite.user = :val')
+            ->setParameter('val', $user)
+            ->getQuery()
+            ->getResult();
+    }
 }
