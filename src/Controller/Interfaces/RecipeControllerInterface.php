@@ -9,7 +9,7 @@
 
 namespace App\Controller\Interfaces;
 
-use App\Service\Interfaces\FileUploaderInterface;
+use App\Service\FileUploader;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,8 +22,7 @@ interface RecipeControllerInterface
     public function __construct(ObjectManager $manager,
                                 TokenStorageInterface $tokenStorage,
                                 Environment $twig,
-                                FileUploaderInterface $fileUploader,
                                 FormFactoryInterface $formFactory);
 
-    public function __invoke(Request $request):Response;
+    public function __invoke(Request $request, FileUploader $fileUploader):Response;
 }
