@@ -10,6 +10,7 @@
 namespace App\Controller;
 
 use App\Controller\Interfaces\ProfilControllerInterface;
+use App\Entity\Favorite;
 use App\Entity\Recipe;
 use App\Form\EditMailType;
 use App\Form\EditPasswordType;
@@ -89,15 +90,29 @@ class ProfilController implements ProfilControllerInterface
     public function __invoke(Request $request):Response
     {
         $user = $this->getUser();
+
         $authoredRecipeImage = [];
         $authoredRecipeList = $this->manager
             ->getRepository(Recipe::class)
             ->getRecipeByAuthor($user);
 
+        $userFavoritesRecipe = [];
+        $userFavoritesImages = [];
+        $userFavorites = $this->manager
+            ->getRepository(Favorite::class)
+            ->getUserFavorites($user);
+
         foreach ($authoredRecipeList as $item)
         {
             $image = RecipeUtils::getImageUri($item);
             array_push($authoredRecipeImage, $image);
+        }
+
+        foreach ($userFavorites as $favorite)
+        {
+            array_push($userFavoritesRecipe, $favorite->getRecipe());
+            $favoriteImage = RecipeUtils::getImageUri($favorite->getRecipe());
+            array_push($userFavoritesImages, $favoriteImage);
         }
 
         $mailForm = $this->formFactory->create(EditMailType::class);
@@ -133,6 +148,8 @@ class ProfilController implements ProfilControllerInterface
             'contribution_count' => count($authoredRecipeList),
             'authored_recipe_list' => $authoredRecipeList,
             'authored_recipe_image' => $authoredRecipeImage,
+            'favorite_recipe_list' => $userFavoritesRecipe,
+            'favorite_recipe_image_list' => $userFavoritesImages,
             'mail_form' => $mailForm->createView(),
             'password_form' => $passwordForm->createView()
         ]));
