@@ -2,6 +2,7 @@
 
 {% block page %}
     <div class="row favorite">
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <form method="post">
             {% if is_favorite %}
             <button type="submit" class="btn btn-primary">Retirer des favoris</button>
@@ -9,6 +10,7 @@
             <button type="submit" class="btn btn-primary">Ajouter au favoris</button>
             {% endif %}
         </form>
+        {% endif %}
     </div>
     <div class="row similar-recipe">
         <h3 class="col-md-12">Recettes similaires :</h3>
