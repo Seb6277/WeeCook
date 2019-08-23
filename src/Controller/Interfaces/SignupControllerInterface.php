@@ -17,6 +17,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 interface SignupControllerInterface
 {
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder, ObjectManager $manager);
-    public function __invoke(Request $request, ValidatorInterface $validator);
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder,
+                                ObjectManager $manager,
+                                ValidatorInterface $validator);
+    public function __invoke(Request $request);
 }

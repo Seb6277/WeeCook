@@ -10,6 +10,7 @@
 namespace App\Controller;
 
 use App\Controller\Interfaces\ModerateRecipeControllerInterface;
+use App\DTO\Interfaces\ModerationDTOInterface;
 use App\DTO\ModerationDTO;
 use App\Entity\Ingredient;
 use App\Entity\IngredientQuantity;
@@ -23,6 +24,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twig\Environment;
 
+/**
+ * Class ModerateRecipeController
+ * @package App\Controller
+ */
 class ModerateRecipeController implements ModerateRecipeControllerInterface
 {
     /**
@@ -31,28 +36,48 @@ class ModerateRecipeController implements ModerateRecipeControllerInterface
     private $manager;
 
     /**
-     * ModerateRecipeController constructor.
-     * @param $manager
+     * @var Environment
      */
-    public function __construct(ObjectManager $manager)
+    private $twig;
+
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
+
+    /**
+     * @var ModerationDTOInterface
+     */
+    private $moderationDTO;
+
+    /**
+     * ModerateRecipeController constructor.
+     * @param ObjectManager $manager
+     * @param Environment $twig
+     * @param FormFactoryInterface $formFactory
+     * @param ModerationDTOInterface $moderationDTO
+     */
+    public function __construct(ObjectManager $manager,
+                                Environment $twig,
+                                FormFactoryInterface $formFactory,
+                                ModerationDTOInterface $moderationDTO)
     {
         $this->manager = $manager;
+        $this->formFactory = $formFactory;
+        $this->twig = $twig;
+        $this->moderationDTO = $moderationDTO;
     }
 
     /**
      * @Route("/moderate", name="moderation_page", methods={"GET", "POST"})
      *
-     * @param Environment $twig
+     * @param Request $request
      * @return Response
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function __invoke(
-        Request $request,
-        Environment $twig,
-        FormFactoryInterface $formFactory,
-        ModerationDTO $moderationDTO):Response
+    public function __invoke(Request $request):Response
     {
         $ingredients = [];
         $quantities = [];
@@ -71,7 +96,7 @@ class ModerateRecipeController implements ModerateRecipeControllerInterface
         {
             $recipe = $recipe_array[0];
         } else {
-            return new Response($twig->render('recipe/no_recipe_moderate.html.twig'));
+            return new Response($this->twig->render('recipe/no_recipe_moderate.html.twig'));
         }
 
 
@@ -93,7 +118,7 @@ class ModerateRecipeController implements ModerateRecipeControllerInterface
          * Handle the validation section
          */
 
-        $form = $formFactory->create(ModerationType::class);
+        $form = $this->formFactory->create(ModerationType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
@@ -113,7 +138,7 @@ class ModerateRecipeController implements ModerateRecipeControllerInterface
             $this->manager->flush();
         }
 
-        return new Response($twig->render('recipe/moderate.html.twig', [
+        return new Response($this->twig->render('recipe/moderate.html.twig', [
             'preparation' => $recipe->getPreparation(),
             'recipe_name' => $recipe->getName(),
             'ingredients' => $ingredients,

@@ -10,6 +10,7 @@
 namespace App\Controller\Interfaces;
 
 
+use App\DTO\Interfaces\ModerationDTOInterface;
 use App\DTO\ModerationDTO;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -19,10 +20,10 @@ use Twig\Environment;
 
 interface ModerateRecipeControllerInterface
 {
-    public function __construct(ObjectManager $manager);
-    public function __invoke(
-        Request $request,
-        Environment $twig,
-        FormFactoryInterface $formFactory,
-        ModerationDTO $moderationDTO):Response;
+    public function __construct(ObjectManager $manager,
+                                Environment $twig,
+                                FormFactoryInterface $formFactory,
+                                ModerationDTOInterface $moderationDTO);
+
+    public function __invoke(Request $request):Response;
 }

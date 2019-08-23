@@ -9,9 +9,7 @@
 
 namespace App\Controller\Interfaces;
 
-
-use App\Repository\IngredientRepository;
-use App\Service\FileUploader;
+use App\Service\Interfaces\FileUploaderInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,10 +19,11 @@ use Twig\Environment;
 
 interface RecipeControllerInterface
 {
-    public function __construct(ObjectManager $manager, TokenStorageInterface $tokenStorage);
-    public function __invoke(Environment $twig,
-                             Request $request,
-                             FileUploader $fileUploader,
-                             ObjectManager $manager,
-                             FormFactoryInterface $formFactory):Response;
+    public function __construct(ObjectManager $manager,
+                                TokenStorageInterface $tokenStorage,
+                                Environment $twig,
+                                FileUploaderInterface $fileUploader,
+                                FormFactoryInterface $formFactory);
+
+    public function __invoke(Request $request):Response;
 }

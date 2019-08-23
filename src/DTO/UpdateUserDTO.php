@@ -10,7 +10,13 @@
 namespace App\DTO;
 
 
-class UpdateUserDTO
+use App\DTO\Interfaces\UpdateUserDTOInterface;
+
+/**
+ * Class UpdateUserDTO
+ * @package App\DTO
+ */
+class UpdateUserDTO implements UpdateUserDTOInterface
 {
     public $email;
     public $password;

@@ -15,9 +15,8 @@ use App\Entity\IngredientQuantity;
 use App\Entity\Recipe;
 use App\Form\EditRecipeType;
 use App\Service\FileUploader;
-use App\Utils\UserUtils;
+use App\Service\Interfaces\FileUploaderInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,40 +28,80 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Twig\Environment;
 
+/**
+ * Class RecipeController
+ * @package App\Controller
+ */
 class RecipeController implements RecipeControllerInterface
 {
 
+    /**
+     * @var \App\Repository\IngredientRepository|\Doctrine\Common\Persistence\ObjectRepository
+     */
     private $ingredientRepository;
+
+    /**
+     * @var ObjectManager
+     */
     private $manager;
+
+    /**
+     * @var Environment
+     */
     private $twig;
+
+    /**
+     * @var TokenStorageInterface
+     */
     private $tokenStorage;
 
-    public function __construct(ObjectManager $manager, TokenStorageInterface $tokenStorage)
+    /**
+     * @var FileUploaderInterface
+     */
+    private $fileUploader;
+
+    /**
+     * @var FormFactoryInterface
+     */
+    private $formFactory;
+
+    /**
+     * RecipeController constructor.
+     * @param ObjectManager $manager
+     * @param TokenStorageInterface $tokenStorage
+     * @param Environment $twig
+     * @param FileUploaderInterface $fileUploader
+     * @param FormFactoryInterface $formFactory
+     */
+    public function __construct(ObjectManager $manager,
+                                TokenStorageInterface $tokenStorage,
+                                Environment $twig,
+                                FileUploaderInterface $fileUploader,
+                                FormFactoryInterface $formFactory)
     {
         $this->manager = $manager;
         $this->ingredientRepository = $manager->getRepository(Ingredient::class);
         $this->tokenStorage = $tokenStorage;
+        $this->twig = $twig;
+        $this->fileUploader = $fileUploader;
+        $this->formFactory = $formFactory;
     }
 
     /**
-     * @param Request $request
-     * @param FileUploader $fileUploader
-     * @param ObjectManager $manager
-     * @return Response
-     * @throws \Exception
-     *
      * @Route("/create", name="creation_page", methods={"GET", "POST"})
+     *
+     * @param Request $request
+     * @return Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
      */
-    public function __invoke(Environment $twig,
-                             Request $request,
-                             FileUploader $fileUploader,
-                             ObjectManager $manager,
-                             FormFactoryInterface $formFactory): Response
+    public function __invoke(Request $request): Response
     {
         $ingredientInDatabase = $this->ingredientRepository->findAll();
         $recipe = new Recipe();
 
-        $form = $formFactory->create(EditRecipeType::class, $recipe);
+        $form = $this->formFactory->create(EditRecipeType::class, $recipe);
 
         $form->handleRequest($request);
 
@@ -73,7 +112,7 @@ class RecipeController implements RecipeControllerInterface
             // Store name and preparation in $recipe
             $form->getData();
             $image1 = $form['image1']->getData();
-            $image1Name = $fileUploader->upload($image1);
+            $image1Name = $this->fileUploader->upload($image1);
             $recipe->setImage1($image1Name);
 
             // Retrieve ingredient[] and quantity[]
@@ -93,8 +132,8 @@ class RecipeController implements RecipeControllerInterface
             $recipe->setCreatedAt(new \DateTime());
             $recipe->setAuthor($this->tokenStorage->getToken()->getUser());
             $recipe->setValidation(false);
-            $manager->persist($recipe);
-            $manager->flush();
+            $this->manager->persist($recipe);
+            $this->manager->flush();
 
             $request->getSession()->getFlashBag()->add('info', 'La recette à bien était créer !');
 
@@ -102,7 +141,7 @@ class RecipeController implements RecipeControllerInterface
 
         }
 
-        return new Response($twig->render('recipe/create.html.twig', [
+        return new Response($this->twig->render('recipe/create.html.twig', [
             //serialized ingredient send to React via HTML
             'ingredients' => $this->serializeToJson($ingredientInDatabase),
             'recipe_form' => $form->createView()

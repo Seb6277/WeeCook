@@ -11,14 +11,21 @@ namespace App\Form;
 
 
 use App\DTO\SearchDTO;
-use App\Form\Interfaces\SearchRecipeFormTypeInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SearchRecipeFormType extends AbstractType implements SearchRecipeFormTypeInterface
+/**
+ * Class SearchRecipeFormType
+ * @package App\Form
+ */
+class SearchRecipeFormType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -27,6 +34,9 @@ class SearchRecipeFormType extends AbstractType implements SearchRecipeFormTypeI
             ]);
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

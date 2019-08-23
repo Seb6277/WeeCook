@@ -16,6 +16,10 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class EditMailType
+ * @package App\Form
+ */
 class EditMailType extends AbstractType
 {
     /**

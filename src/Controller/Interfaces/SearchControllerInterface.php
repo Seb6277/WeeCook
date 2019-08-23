@@ -9,7 +9,8 @@
 
 namespace App\Controller\Interfaces;
 
-use App\DTO\SearchDTO;
+use App\DTO\Interfaces\SearchDTOInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,5 +18,10 @@ use Twig\Environment;
 
 interface SearchControllerInterface
 {
-    public function __invoke(Request $request, Environment $twig, FormFactoryInterface $formFactory, SearchDTO $searchDTO):Response;
+    public function __construct(ObjectManager $manager,
+                                Environment $twig,
+                                FormFactoryInterface $formFactory,
+                                SearchDTOInterface $searchDTO);
+
+    public function __invoke(Request $request):Response;
 }

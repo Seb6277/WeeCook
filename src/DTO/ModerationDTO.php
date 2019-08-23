@@ -9,8 +9,13 @@
 
 namespace App\DTO;
 
+use App\DTO\Interfaces\ModerationDTOInterface;
 
-class ModerationDTO
+/**
+ * Class ModerationDTO
+ * @package App\DTO
+ */
+class ModerationDTO implements ModerationDTOInterface
 {
     public $validate;
 }

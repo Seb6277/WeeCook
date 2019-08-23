@@ -13,6 +13,10 @@ namespace App\Utils;
 use App\Utils\Interfaces\RecipeUtilsInterface;
 use App\Entity\Recipe;
 
+/**
+ * Class RecipeUtils
+ * @package App\Utils
+ */
 class RecipeUtils implements RecipeUtilsInterface
 {
 
@@ -26,6 +30,10 @@ class RecipeUtils implements RecipeUtilsInterface
         return '/uploads/images/'.$recipes[$index]->getImage1();
     }
 
+    /**
+     * @param Recipe $recipe
+     * @return string
+     */
     public static function getImageUri(Recipe $recipe): string
     {
         return '/uploads/images/'.$recipe->getImage1();

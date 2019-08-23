@@ -14,7 +14,6 @@ use App\Entity\Favorite;
 use App\Entity\Ingredient;
 use App\Entity\IngredientQuantity;
 use App\Entity\Recipe;
-use App\Entity\User;
 use App\Utils\RecipeUtils;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +23,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Environment;
 
+/**
+ * Class RecipeShowController
+ * @package App\Controller
+ */
 class RecipeShowController implements RecipeShowControllerInterface
 {
     /**
@@ -42,27 +45,40 @@ class RecipeShowController implements RecipeShowControllerInterface
     private $session;
 
     /**
-     * RecipeShowController constructor.
-     * @param ObjectManager $manager
+     * @var Environment
      */
-    public function __construct(SessionInterface $session, ObjectManager $manager, TokenStorageInterface $tokenStorage)
+    private $twig;
+
+    /**
+     * RecipeShowController constructor.
+     * @param SessionInterface $session
+     * @param ObjectManager $manager
+     * @param TokenStorageInterface $tokenStorage
+     * @param Environment $twig
+     */
+    public function __construct(SessionInterface $session,
+                                ObjectManager $manager,
+                                TokenStorageInterface $tokenStorage,
+                                Environment $twig)
     {
         $this->manager = $manager;
         $this->tokenStorage = $tokenStorage;
         $this->session = $session;
+        $this->twig = $twig;
     }
 
     /**
      * @Route("/show/{id}", name="recipe_show", methods={"GET", "POST"}, requirements={"id" = "\d+"})
      *
-     * @param Environment $twig
-     * @return string
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
-     * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function __invoke(Request $request, Environment $twig, int $id):Response
+    public function __invoke(Request $request, int $id):Response
     {
         $ingredients = [];
         $quantities = [];
@@ -127,7 +143,7 @@ class RecipeShowController implements RecipeShowControllerInterface
             }
         }
         
-        return new Response($twig->render('recipe/show.html.twig', [
+        return new Response($this->twig->render('recipe/show.html.twig', [
             'controller_name' => 'RecipeShowController',
             'preparation' => $recipe->getPreparation(),
             'recipe_name' => $recipe->getName(),
