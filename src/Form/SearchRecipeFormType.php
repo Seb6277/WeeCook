@@ -32,14 +32,15 @@ class SearchRecipeFormType extends AbstractType
     {
         $builder
             ->add('searchString', TextType::class, [
-                'label' => 'Recherche',
+                'label' => 'Recherche :',
                 'required' => false
             ])
             ->add('category', EntityType::class, [
                 'class' => RecipeCategory::class,
                 'choice_label' => 'category',
                 'placeholder' => 'Selectionner',
-                'required' => false
+                'required' => false,
+                'label' => 'Catégorie (facultatif) :'
             ]);
     }
 

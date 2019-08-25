@@ -11,9 +11,12 @@ namespace App\Controller;
 
 use App\Controller\Interfaces\SearchControllerInterface;
 use App\DTO\Interfaces\SearchDTOInterface;
+use App\DTO\SearchByIngredientDTO;
 use App\DTO\SearchDTO;
+use App\Entity\IngredientQuantity;
 use App\Entity\Recipe;
 use App\Form\Interfaces\SearchRecipeFormTypeInterface;
+use App\Form\SearchByIngredientType;
 use App\Form\SearchRecipeFormType;
 use App\Utils\RecipeUtils;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -50,17 +53,25 @@ class SearchController implements SearchControllerInterface
     private $searchDTO;
 
     /**
+     * @var SearchByIngredientDTO
+     */
+    private $byIngredientDTO;
+
+    /**
      * SearchController constructor.
      * @param ObjectManager $manager
      * @param Environment $twig
      * @param FormFactoryInterface $formFactory
      * @param SearchDTOInterface $searchDTO
+     * @param SearchByIngredientDTO $byIngredientDTO
      */
     public function __construct(ObjectManager $manager,
                                 Environment $twig,
                                 FormFactoryInterface $formFactory,
-                                SearchDTOInterface $searchDTO)
+                                SearchDTOInterface $searchDTO,
+                                SearchByIngredientDTO $byIngredientDTO)
     {
+        $this->byIngredientDTO = $byIngredientDTO;
         $this->manager = $manager;
         $this->twig = $twig;
         $this->formFactory = $formFactory;
@@ -82,15 +93,17 @@ class SearchController implements SearchControllerInterface
         $imageList = [];
 
         $form = $this->formFactory->create(SearchRecipeFormType::class);
+        $formByIngredient = $this->formFactory->create(SearchByIngredientType::class);
 
         $recipes = $this->manager->getRepository(Recipe::class)->findAllValid();
 
         $form->handleRequest($request);
+        $formByIngredient->handleRequest($request);
 
+        // Standard search Form
         if ($form->isSubmitted() && $form->isValid())
         {
             $this->searchDTO = $form->getData();
-            dump($this->searchDTO);
 
             if ($this->searchDTO->category !== null)
             {
@@ -102,14 +115,38 @@ class SearchController implements SearchControllerInterface
             }
         }
 
+        // Search form by ingredients
+        if ($formByIngredient->isSubmitted() && $formByIngredient->isValid())
+        {
+            // Remove all recipe from the table
+            $recipes = [];
+
+            $this->byIngredientDTO = $formByIngredient->getData();
+            // Retrieve ingredient_quantity
+            $ingredientQuantityRepository = $this->manager
+                ->getRepository(IngredientQuantity::class);
+
+            $ingredientQuantity = $ingredientQuantityRepository
+                ->getAllItemsByIngredient($this->byIngredientDTO->ingredient1->getId());
+
+
+            // Retrieve Recipe
+            foreach ($ingredientQuantity as $item)
+            {
+                array_push($recipes, $item->getRecipe());
+            }
+        }
+
         foreach ($recipes as $recipe)
         {
             array_push($imageList, RecipeUtils::getImageUri($recipe));
         }
+
         return new Response($this->twig->render('search/search.html.twig', [
             'recipes' => $recipes,
             'images' => $imageList,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'form_ingredient' => $formByIngredient->createView()
         ]));
     }
 }

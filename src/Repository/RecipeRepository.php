@@ -162,4 +162,19 @@ class RecipeRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
+    /**
+     * @param $ingredient1
+     * @return mixed
+     */
+    public function getRecipeByIngredient($ingredient1)
+    {
+        return $this->createQueryBuilder('recipe')
+            ->andWhere('recipe.validation = :val')
+            ->setParameter('val', 1)
+            ->andWhere('recipe.ingredient = :ingredient1')
+            ->setParameter('ingredient1', $ingredient1)
+            ->getQuery()
+            ->getResult();
+    }
 }
