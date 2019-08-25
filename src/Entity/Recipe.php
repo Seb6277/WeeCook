@@ -79,6 +79,11 @@ class Recipe
      */
     private $validation;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $category;
+
     public function __construct()
     {
         $this->ingredient = new ArrayCollection();
@@ -182,6 +187,18 @@ class Recipe
     public function setValidation(bool $validation)
     {
         $this->validation = $validation;
+
+        return $this;
+    }
+
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    public function setCategory(string $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

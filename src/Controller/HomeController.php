@@ -54,14 +54,18 @@ class HomeController implements HomeControllerInterface
      */
     public function __invoke():Response
     {
+        $recentRecipeImage = [];
         $repository = $this->manager->getRepository(Recipe::class);
         $recipes = $repository->getThreeLatest();
 
+        foreach ($recipes as $recipe)
+        {
+            array_push($recentRecipeImage, RecipeUtils::getImageUri($recipe));
+        }
+
         return new Response($this->twig->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
-            'recipe_image_1' => RecipeUtils::getHomeImageUri($recipes, 0),
-            'recipe_image_2' => RecipeUtils::getHomeImageUri($recipes, 1),
-            'recipe_image_3' => RecipeUtils::getHomeImageUri($recipes, 2),
+            'recent_recipe_image' => $recentRecipeImage
         ]));
     }
 }

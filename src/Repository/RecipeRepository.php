@@ -80,14 +80,46 @@ class RecipeRepository extends ServiceEntityRepository
      */
     public function getRecipeByName(string $search)
     {
-        return $this->createQueryBuilder('recipe')
-            ->andWhere('REGEXP(recipe.name, :regexp) = true')
-            ->setParameter('regexp', $search)
-            ->andWhere('recipe.validation = :val')
-            ->setParameter('val', 1)
-            ->getQuery()
-            ->getResult()
-            ;
+        if ($search !== "")
+        {
+            return $this->createQueryBuilder('recipe')
+                ->andWhere('REGEXP(recipe.name, :regexp) = true')
+                ->setParameter('regexp', $search)
+                ->andWhere('recipe.validation = :val')
+                ->setParameter('val', 1)
+                ->getQuery()
+                ->getResult();
+        } else {
+            return $this->createQueryBuilder('recipe')
+                ->andWhere('recipe.validation = :val')
+                ->setParameter('val', 1)
+                ->getQuery()
+                ->getResult();
+        }
+    }
+
+    public function getRecipeByNameAndCategory($search, $category)
+    {
+        if ($search !== "")
+        {
+            return $this->createQueryBuilder('recipe')
+                ->andWhere('REGEXP(recipe.name, :regexp) = true')
+                ->setParameter('regexp', $search)
+                ->andWhere('recipe.category = :cat')
+                ->setParameter('cat', $category)
+                ->andWhere('recipe.validation = :val')
+                ->setParameter('val', 1)
+                ->getQuery()
+                ->getResult();
+        } else {
+            return $this->createQueryBuilder('recipe')
+                ->andWhere('recipe.category = :cat')
+                ->setParameter('cat', $category)
+                ->andWhere('recipe.validation = :val')
+                ->setParameter('val', 1)
+                ->getQuery()
+                ->getResult();
+        }
     }
 
     /**
@@ -129,5 +161,20 @@ class RecipeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    /**
+     * @param $ingredient1
+     * @return mixed
+     */
+    public function getRecipeByIngredient($ingredient1)
+    {
+        return $this->createQueryBuilder('recipe')
+            ->andWhere('recipe.validation = :val')
+            ->setParameter('val', 1)
+            ->andWhere('recipe.ingredient = :ingredient1')
+            ->setParameter('ingredient1', $ingredient1)
+            ->getQuery()
+            ->getResult();
     }
 }

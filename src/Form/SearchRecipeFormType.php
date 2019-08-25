@@ -11,6 +11,8 @@ namespace App\Form;
 
 
 use App\DTO\SearchDTO;
+use App\Entity\RecipeCategory;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -30,7 +32,15 @@ class SearchRecipeFormType extends AbstractType
     {
         $builder
             ->add('searchString', TextType::class, [
-                'label' => 'Recherche'
+                'label' => 'Recherche :',
+                'required' => false
+            ])
+            ->add('category', EntityType::class, [
+                'class' => RecipeCategory::class,
+                'choice_label' => 'category',
+                'placeholder' => 'Selectionner',
+                'required' => false,
+                'label' => 'Catégorie (facultatif) :'
             ]);
     }
 

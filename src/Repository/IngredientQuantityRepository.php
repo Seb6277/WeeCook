@@ -72,4 +72,17 @@ class IngredientQuantityRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    /**
+     * @param $ingredientId
+     * @return mixed
+     */
+    public function getAllItemsByIngredient($ingredientId)
+    {
+        return $this->createQueryBuilder('items')
+            ->andWhere('items.ingredient = :val')
+            ->setParameter('val', $ingredientId)
+            ->getQuery()
+            ->getResult();
+    }
 }

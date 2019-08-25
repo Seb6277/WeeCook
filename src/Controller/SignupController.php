@@ -91,7 +91,7 @@ class SignupController extends AbstractController implements SignupControllerInt
                 $this->manager->flush();
 
                 // Login success. Redirect to homepage with user logged in
-                return $this->redirectToRoute('home');
+                return $this->redirectToRoute('app_login');
             } else {
                 // Else trigger an error string and send it to the view
                 $error = "";

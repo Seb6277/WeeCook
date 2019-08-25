@@ -35,6 +35,9 @@ nav{
   }
   .carousel-item {
     height: 500px;
+    img{
+      height: fit-content;
+    }
   }
 }
 
