@@ -17,8 +17,23 @@
   .favorite-section{
     margin-bottom: 40px;
   }
+  .card-text{
+    max-height: 25px;
+    overflow: hidden;
+  }
 }
 
 .btn-profil{
   margin-top: 30px;
+}
+
+@media screen and (min-width: 640px) {
+  .profil_layout{
+    .card{
+      height: 140px;
+    }
+    img{
+      height: 140px;
+    }
+  }
 }
