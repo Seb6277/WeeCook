@@ -7,11 +7,12 @@
  */
 
 .search-content{
-  h1{
+  h1, h2{
     text-align: center;
   }
   .card{
-    margin-top: 20px;
+    margin-top: 0;
+    margin-bottom: 20px;
     box-shadow: 5px 5px 10px grey;
   }
   .card-body{
@@ -20,17 +21,17 @@
   img{
     height: 200px;
   }
+  #search_by_ingredient_ingredient1{
+    margin-bottom: 20px;
+  }
+  .by-ingredient-submit{
+    margin-bottom: 20px;
+  }
+  label{
+    margin-top: 10px;
+  }
 }
 .search-button{
   margin-top: 30px;
-}
-
-@media screen and (max-width: 640px){
-  .search-button{
-    margin-bottom: 20px;
-  }
-  .card{
-    margin-top: 0;
-    margin-bottom: 20px;
-  }
+  margin-bottom: 20px;
 }
