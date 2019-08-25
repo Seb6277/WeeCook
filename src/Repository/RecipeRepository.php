@@ -80,14 +80,46 @@ class RecipeRepository extends ServiceEntityRepository
      */
     public function getRecipeByName(string $search)
     {
-        return $this->createQueryBuilder('recipe')
-            ->andWhere('REGEXP(recipe.name, :regexp) = true')
-            ->setParameter('regexp', $search)
-            ->andWhere('recipe.validation = :val')
-            ->setParameter('val', 1)
-            ->getQuery()
-            ->getResult()
-            ;
+        if ($search !== "")
+        {
+            return $this->createQueryBuilder('recipe')
+                ->andWhere('REGEXP(recipe.name, :regexp) = true')
+                ->setParameter('regexp', $search)
+                ->andWhere('recipe.validation = :val')
+                ->setParameter('val', 1)
+                ->getQuery()
+                ->getResult();
+        } else {
+            return $this->createQueryBuilder('recipe')
+                ->andWhere('recipe.validation = :val')
+                ->setParameter('val', 1)
+                ->getQuery()
+                ->getResult();
+        }
+    }
+
+    public function getRecipeByNameAndCategory($search, $category)
+    {
+        if ($search !== "")
+        {
+            return $this->createQueryBuilder('recipe')
+                ->andWhere('REGEXP(recipe.name, :regexp) = true')
+                ->setParameter('regexp', $search)
+                ->andWhere('recipe.category = :cat')
+                ->setParameter('cat', $category)
+                ->andWhere('recipe.validation = :val')
+                ->setParameter('val', 1)
+                ->getQuery()
+                ->getResult();
+        } else {
+            return $this->createQueryBuilder('recipe')
+                ->andWhere('recipe.category = :cat')
+                ->setParameter('cat', $category)
+                ->andWhere('recipe.validation = :val')
+                ->setParameter('val', 1)
+                ->getQuery()
+                ->getResult();
+        }
     }
 
     /**

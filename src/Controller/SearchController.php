@@ -89,9 +89,17 @@ class SearchController implements SearchControllerInterface
 
         if ($form->isSubmitted() && $form->isValid())
         {
-            $this->searchDTO->searchString = $form->getData();
-            $recipes = $this->manager->getRepository(Recipe::class)
-                ->getRecipeByName((string)$this->searchDTO);
+            $this->searchDTO = $form->getData();
+            dump($this->searchDTO);
+
+            if ($this->searchDTO->category !== null)
+            {
+                $recipes = $this->manager->getRepository(Recipe::class)
+                    ->getRecipeByNameAndCategory((string)$this->searchDTO, $this->searchDTO->category->getCategory());
+            } else {
+                $recipes = $this->manager->getRepository(Recipe::class)
+                    ->getRecipeByName((string)$this->searchDTO);
+            }
         }
 
         foreach ($recipes as $recipe)

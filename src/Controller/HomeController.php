@@ -62,8 +62,6 @@ class HomeController implements HomeControllerInterface
         {
             array_push($recentRecipeImage, RecipeUtils::getImageUri($recipe));
         }
-        dump($recipes);
-        dump($recentRecipeImage);
 
         return new Response($this->twig->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
