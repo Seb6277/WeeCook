@@ -19,6 +19,7 @@ use App\DTO\Interfaces\SearchDTOInterface;
 class SearchDTO implements SearchDTOInterface
 {
     public $searchString;
+    public $category;
 
     /**
      * @return string
