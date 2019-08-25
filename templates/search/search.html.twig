@@ -13,6 +13,8 @@
         <div class="col-md-12">
             {{ form_start(form) }}
             {{ form_widget(form.searchString) }}
+            {{ form_label(form.category) }}
+            {{ form_widget(form.category) }}
             <button type="submit" class="btn btn-primary search-button">Rechercher</button>
             {{ form_end(form) }}
             {#
@@ -23,6 +25,17 @@
                 </div>
             </form>
             #}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Ou rechercher par ingrédients !</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_start(form_ingredient) }}
+            {{ form_end(form_ingredient) }}
         </div>
     </div>
     <div class="row">

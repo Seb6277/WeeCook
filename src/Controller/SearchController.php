@@ -14,6 +14,7 @@ use App\DTO\Interfaces\SearchDTOInterface;
 use App\DTO\SearchDTO;
 use App\Entity\Recipe;
 use App\Form\Interfaces\SearchRecipeFormTypeInterface;
+use App\Form\SearchByIngredientType;
 use App\Form\SearchRecipeFormType;
 use App\Utils\RecipeUtils;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -82,10 +83,12 @@ class SearchController implements SearchControllerInterface
         $imageList = [];
 
         $form = $this->formFactory->create(SearchRecipeFormType::class);
+        $formByIngredient = $this->formFactory->create(SearchByIngredientType::class);
 
         $recipes = $this->manager->getRepository(Recipe::class)->findAllValid();
 
         $form->handleRequest($request);
+        $formByIngredient->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid())
         {
@@ -109,7 +112,8 @@ class SearchController implements SearchControllerInterface
         return new Response($this->twig->render('search/search.html.twig', [
             'recipes' => $recipes,
             'images' => $imageList,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'form_ingredient' => $formByIngredient->createView()
         ]));
     }
 }
