@@ -35,6 +35,8 @@
     <div class="row">
         <div class="col-md-12">
             {{ form_start(form_ingredient) }}
+                {{ form_widget(form_ingredient.ingredient1) }}
+                <button type="submit" class="btn btn-primary">Rechercher</button>
             {{ form_end(form_ingredient) }}
         </div>
     </div>

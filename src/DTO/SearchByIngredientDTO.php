@@ -15,6 +15,4 @@ use App\DTO\Interfaces\SearchByIngredientDTOInterface;
 class SearchByIngredientDTO implements SearchByIngredientDTOInterface
 {
     public $ingredient1;
-    public $ingredient2;
-    public $ingredient3;
 }

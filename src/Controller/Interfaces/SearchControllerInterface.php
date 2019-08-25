@@ -10,6 +10,7 @@
 namespace App\Controller\Interfaces;
 
 use App\DTO\Interfaces\SearchDTOInterface;
+use App\DTO\SearchByIngredientDTO;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +22,8 @@ interface SearchControllerInterface
     public function __construct(ObjectManager $manager,
                                 Environment $twig,
                                 FormFactoryInterface $formFactory,
-                                SearchDTOInterface $searchDTO);
+                                SearchDTOInterface $searchDTO,
+                                SearchByIngredientDTO $byIngredientDTO);
 
     public function __invoke(Request $request):Response;
 }

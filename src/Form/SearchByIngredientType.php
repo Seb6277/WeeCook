@@ -27,18 +27,6 @@ class SearchByIngredientType extends AbstractType
                 'placeholder' => 'ingredient 1',
                 'choice_label' => 'name',
                 'required' => true
-            ])
-            ->add('ingredient2', EntityType::class, [
-                'class' => Ingredient::class,
-                'placeholder' => "ingredient 2",
-                'choice_label' => 'name',
-                'required' => false
-            ])
-            ->add('ingredient3', EntityType::class, [
-                'class' => Ingredient::class,
-                'placeholder' => 'ingredient 3',
-                'choice_label' => 'name',
-                'required' => false
             ]);
     }
 
